@@ -1,0 +1,2 @@
+# Agregar partes a una tabla simple
+

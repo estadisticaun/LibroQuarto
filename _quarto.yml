@@ -3,29 +3,26 @@ project:
   output-dir: docs
 
 book:
-  title: "Paquete UnalR <br> Manual de usuario"
-  author: "Jane Doe"
-  cover-image: images/cover.png
-  repo-url: https://github.com/jjallaire/hopr/
-  repo-branch: master
-  repo-actions: [edit]
-  sharing: [twitter, facebook, linkedin]
-  date: "09/14/2022"
-  date-format: "MM-D-YYYY"
+  title: "Crear tablas de resumen en R"
+  author: "Dirección Nacional de Planeación y Estadística"
   chapters:
     - index.qmd
-    - intro.qmd
-    - summary.qmd
-    - references.qmd
+    - "Conceptos Basicos.qmd"
+    - "Agregar Partes.qmd"
+    - Referencias.qmd
 
 bibliography: references.bib
 
 format:
   html:
-    theme: simplex
-    css: style.css
+    theme: cosmo
   pdf:
     documentclass: scrreprt
 
 editor: visual
+
+lang: es
+
+
+
 
