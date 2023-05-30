@@ -1,0 +1,33 @@
+# Conceptos Básicos
+
+Usando la base de datos de R llamada islands, que es un vector, crearemos un objeto *tibble* utilizando el paquete *dplyr*.
+
+```{r}
+# Cargar libreria
+suppressMessages(library(dplyr))
+
+# Obtener las 10 islas más grandes en el mundo
+islands_tbl <- 
+  tibble(
+    name = names(islands),
+    size = islands
+  ) |>
+  arrange(desc(size)) |>
+  slice(1:10)
+
+islands_tbl
+```
+
+
+Dado que `islands_tbl` es un *tibble*, ahora tenemos una entrada adecuada para *gt*. Si pasamos `islands_tbl` a la función *gt()*, obtendremos una tabla *gt* como resultado. Por cierto, también podríamos haber utilizado un data frame en su lugar como datos de tabla válidos para *gt*.
+
+```{r}
+# Installar libreria
+suppressMessages(library(gt))
+
+# Crear tabla
+(gt_tbl <- gt(islands_tbl))
+```
+
+
+Es una tabla básica, pero se le pueden agregar títulos, subtítulos, grupos, subgrupos, y más, según los datos que tengamos y la especificación que le demos a la tabla, como veremos más adelante.
