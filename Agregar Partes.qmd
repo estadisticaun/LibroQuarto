@@ -1,2 +1,54 @@
 # Agregar partes a una tabla simple
 
+Con la librería *gt* podemos personalizar la tabla como deseemos. A continuación podemos apreciar un ejemplo de la estructura de una tabla creada con *gt*
+
+![Partes de una gt Table](Imagenes/Gt table/2. Partes_tabla.png){fig-alt="Partes de una gt Table" fig-align="center" width="80%"}
+
+Las partes son:
+
+* ***Table header***, el encabezado de la tabla, que puede tener título y/o subtítulo.
+* ***Stub* y *Stub Head***, donde se agregan los títulos de las filas de la tabla.
+* ***Column labels*** con los nombres de las columnas
+* ***Table body*** donde están las filas y las columnas "originales".
+* ***Table footer***, que puede tener las notas de pie de página y algunas referencias.
+
+Para incluir cada una de estas partes se utiliza la familia de las funciones `tab_parte()`.
+
+## Table header
+
+Para agregar un encabezado a nuestra tabla usamos la función `tab_header()` y así podemos incluir títulos y subtítulos de ser necesario.
+
+``` {r}
+#| eval: false
+
+suppressMessages(library(gt))
+suppressMessages(library(dplyr))
+islands_tbl <- 
+  tibble(
+    name = names(islands),
+    size = islands
+  ) |>
+  arrange(desc(size)) |>
+  slice(1:10)
+
+islands_tbl
+(gt_tbl <- gt(islands_tbl))
+
+```
+
+``` {r}
+gt_tbl <- 
+  gt_tbl |>
+  tab_header(
+    title = "Grandes masas de tierra del mundo",
+    subtitle = "Top 10 de las más grandes"
+  )
+
+gt_tbl
+```
+
+## Stub y Stub Head
+
+## Column labels
+
+## Table footer

@@ -11,13 +11,48 @@
     "href": "index.html#introducción",
     "title": "Crear tablas de resumen en R",
     "section": "Introducción",
-    "text": "Introducción\nEl paquete gt se enfoca en simplificar la creación de tablas de visualización con un aspecto atractivo. Es importante distinguir entre las tablas de datos (por ejemplo, tibbles, data.frames, etc.) y aquellas tablas que encontrarías en una página web, un artículo de revista o en una revista en sí. Estas tablas también pueden ser llamadas tablas de presentación, tablas resumen o simplemente tablas en realidad.\n\n\n\n\n\nPodemos considerar las tablas de visualización como elementos de salida solamente, donde no queremos utilizarlas nuevamente como entrada. Otras características incluyen anotaciones, estilos de elementos de tabla y transformaciones de texto que ayudan a comunicar de manera más clara el tema en cuestión."
+    "text": "Introducción\nEl paquete gt se enfoca en simplificar la creación de tablas de visualización con un aspecto atractivo. Es importante distinguir entre las tablas de datos (por ejemplo, tibbles, data.frames, etc.) y aquellas tablas que encontrarías en una página web, un artículo de revista o en una revista en sí. Estas tablas también pueden ser llamadas tablas de presentación, tablas resumen o simplemente tablas en realidad.\n\n\n\nFigura 1: GT Table\n\n\nPodemos considerar las tablas de visualización como elementos de salida solamente, donde no queremos utilizarlas nuevamente como entrada. Otras características incluyen anotaciones, estilos de elementos de tabla y transformaciones de texto que ayudan a comunicar de manera más clara el tema en cuestión.\nUn ejemplo de la estructura de la tabla de visualización resultante se puede ver en Figura 1.\nA continuación presentamos un video de Richh Iannone llamado “Making Beautiful Tables with {gt}” disponible en YouTube\n\nSugerimos que comience estudiando Capítulo 1"
   },
   {
     "objectID": "Conceptos Basicos.html",
     "href": "Conceptos Basicos.html",
     "title": "1  Conceptos Básicos",
     "section": "",
-    "text": "Usando la base de datos de R llamada islands, que es un vector, crearemos un objeto tibble utilizando el paquete dplyr.\n\n# Cargar libreria\nsuppressMessages(library(dplyr))\n\n# Obtener las 10 islas más grandes en el mundo\nislands_tbl &lt;- \n  tibble(\n    name = names(islands),\n    size = islands\n  ) |&gt;\n  arrange(desc(size)) |&gt;\n  slice(1:10)\n\nislands_tbl\n\n# A tibble: 10 × 2\n   name           size\n   &lt;chr&gt;         &lt;dbl&gt;\n 1 Asia          16988\n 2 Africa        11506\n 3 North America  9390\n 4 South America  6795\n 5 Antarctica     5500\n 6 Europe         3745\n 7 Australia      2968\n 8 Greenland       840\n 9 New Guinea      306\n10 Borneo          280\n\n\nDado que islands_tbl es un tibble, ahora tenemos una entrada adecuada para gt. Si pasamos islands_tbl a la función gt(), obtendremos una tabla gt como resultado. Por cierto, también podríamos haber utilizado un data frame en su lugar como datos de tabla válidos para gt.\n\n# Installar libreria\nsuppressMessages(library(gt))\n\n# Crear tabla\n(gt_tbl &lt;- gt(islands_tbl))\n\n\n\n\n\n  \n    \n    \n      name\n      size\n    \n  \n  \n    Asia\n16988\n    Africa\n11506\n    North America\n9390\n    South America\n6795\n    Antarctica\n5500\n    Europe\n3745\n    Australia\n2968\n    Greenland\n840\n    New Guinea\n306\n    Borneo\n280\n  \n  \n  \n\n\n\n\nEs una tabla básica, pero se le pueden agregar títulos, subtítulos, grupos, subgrupos, y más, según los datos que tengamos y la especificación que le demos a la tabla, como veremos más adelante."
+    "text": "Usando la base de datos de R llamada islands, que es un vector, crearemos un objeto tibble utilizando el paquete dplyr.\n\n# Cargar libreria\nsuppressMessages(library(dplyr))\n\n# Obtener las 10 islas más grandes en el mundo\nislands_tbl <- \n  tibble(\n    name = names(islands),\n    size = islands\n  ) |>\n  arrange(desc(size)) |>\n  slice(1:10)\n\nislands_tbl\n\n# A tibble: 10 × 2\n   name           size\n   <chr>         <dbl>\n 1 Asia          16988\n 2 Africa        11506\n 3 North America  9390\n 4 South America  6795\n 5 Antarctica     5500\n 6 Europe         3745\n 7 Australia      2968\n 8 Greenland       840\n 9 New Guinea      306\n10 Borneo          280\n\n\nDado que islands_tbl es un tibble, ahora tenemos una entrada adecuada para gt. Si pasamos islands_tbl a la función gt(), obtendremos una tabla gt como resultado. Por cierto, también podríamos haber utilizado un data frame en su lugar como datos de tabla válidos para gt.\n\n# Installar libreria\nsuppressMessages(library(gt))\n\nWarning: package 'gt' was built under R version 4.2.3\n\n# Crear tabla\n(gt_tbl <- gt(islands_tbl))\n\n\n\n\n\n  \n    \n    \n      name\n      size\n    \n  \n  \n    Asia\n16988\n    Africa\n11506\n    North America\n9390\n    South America\n6795\n    Antarctica\n5500\n    Europe\n3745\n    Australia\n2968\n    Greenland\n840\n    New Guinea\n306\n    Borneo\n280\n  \n  \n  \n\n\n\n\nEs una tabla básica, pero se le pueden agregar títulos, subtítulos, grupos, subgrupos, y más, según los datos que tengamos y la especificación que le demos a la tabla, como veremos más adelante."
+  },
+  {
+    "objectID": "Agregar Partes.html",
+    "href": "Agregar Partes.html",
+    "title": "2  Agregar partes a una tabla simple",
+    "section": "",
+    "text": "Con la librería gt podemos personalizar la tabla como deseemos. A continuación podemos apreciar un ejemplo de la estructura de una tabla creada con gt\n\n\n\nPartes de una gt Table\n\n\nLas partes son:\n\nTable Heather, el encabezado de la tabla, que puede tener título y/o subtítulo.\nStub y Stub Head, donde se agregan los títulos de las filas de la tabla.\nColum labels con los nombres de las columnas\nTable body donde están las filas y las columnas “originales”.\nTable footer, que puede tener las notas de pie de página y algunas referencias."
+  },
+  {
+    "objectID": "Agregar Partes.html#table-header",
+    "href": "Agregar Partes.html#table-header",
+    "title": "2  Agregar partes a una tabla simple",
+    "section": "2.1 Table header",
+    "text": "2.1 Table header\nPara agregar un encabezado a nuestra tabla usamos la función tab_header() y así podemos incluir títulos y subtítulos de ser necesario.\n\nsuppressMessages(library(gt))\n\nWarning: package 'gt' was built under R version 4.2.3\n\nsuppressMessages(library(dplyr))\nislands_tbl <- \n  tibble(\n    name = names(islands),\n    size = islands\n  ) |>\n  arrange(desc(size)) |>\n  slice(1:10)\n\nislands_tbl\n\n# A tibble: 10 × 2\n   name           size\n   <chr>         <dbl>\n 1 Asia          16988\n 2 Africa        11506\n 3 North America  9390\n 4 South America  6795\n 5 Antarctica     5500\n 6 Europe         3745\n 7 Australia      2968\n 8 Greenland       840\n 9 New Guinea      306\n10 Borneo          280\n\n(gt_tbl <- gt(islands_tbl))\n\n\n\n\n\n  \n    \n    \n      name\n      size\n    \n  \n  \n    Asia\n16988\n    Africa\n11506\n    North America\n9390\n    South America\n6795\n    Antarctica\n5500\n    Europe\n3745\n    Australia\n2968\n    Greenland\n840\n    New Guinea\n306\n    Borneo\n280\n  \n  \n  \n\n\n\ngt_tbl <- \n  gt_tbl |>\n  tab_header(\n    title = \"Grandes masas de tierra del mundo\",\n    subtitle = \"Top 10 de las más grandes\"\n  )\n\ngt_tbl\n\n\n\n\n\n  \n    \n      Grandes masas de tierra del mundo\n    \n    \n      Top 10 de las más grandes\n    \n    \n      name\n      size\n    \n  \n  \n    Asia\n16988\n    Africa\n11506\n    North America\n9390\n    South America\n6795\n    Antarctica\n5500\n    Europe\n3745\n    Australia\n2968\n    Greenland\n840\n    New Guinea\n306\n    Borneo\n280"
+  },
+  {
+    "objectID": "Agregar Partes.html#stub-y-stub-head",
+    "href": "Agregar Partes.html#stub-y-stub-head",
+    "title": "2  Agregar partes a una tabla simple",
+    "section": "2.2 Stub y Stub Head",
+    "text": "2.2 Stub y Stub Head"
+  },
+  {
+    "objectID": "Agregar Partes.html#column-labels",
+    "href": "Agregar Partes.html#column-labels",
+    "title": "2  Agregar partes a una tabla simple",
+    "section": "2.3 Column labels",
+    "text": "2.3 Column labels"
+  },
+  {
+    "objectID": "Agregar Partes.html#table-footer",
+    "href": "Agregar Partes.html#table-footer",
+    "title": "2  Agregar partes a una tabla simple",
+    "section": "2.4 Table footer",
+    "text": "2.4 Table footer"
   }
 ]

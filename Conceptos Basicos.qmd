@@ -1,4 +1,4 @@
-# Conceptos Básicos
+# Conceptos Básicos {#sec-conceptos}
 
 Usando la base de datos de R llamada islands, que es un vector, crearemos un objeto *tibble* utilizando el paquete *dplyr*.
 
