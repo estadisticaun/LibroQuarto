@@ -32,27 +32,27 @@
     "href": "Agregar Partes.html#table-header",
     "title": "2  Agregar partes a una tabla simple",
     "section": "2.1 Table header",
-    "text": "2.1 Table header\nPara agregar un encabezado a nuestra tabla usamos la función tab_header() y así podemos incluir títulos y subtítulos de ser necesario.\n\nsuppressMessages(library(gt))\n\nWarning: package 'gt' was built under R version 4.2.3\n\nsuppressMessages(library(dplyr))\nislands_tbl <- \n  tibble(\n    name = names(islands),\n    size = islands\n  ) |>\n  arrange(desc(size)) |>\n  slice(1:10)\n\nislands_tbl\n\n# A tibble: 10 × 2\n   name           size\n   <chr>         <dbl>\n 1 Asia          16988\n 2 Africa        11506\n 3 North America  9390\n 4 South America  6795\n 5 Antarctica     5500\n 6 Europe         3745\n 7 Australia      2968\n 8 Greenland       840\n 9 New Guinea      306\n10 Borneo          280\n\n(gt_tbl <- gt(islands_tbl))\n\n\n\n\n\n  \n    \n    \n      name\n      size\n    \n  \n  \n    Asia\n16988\n    Africa\n11506\n    North America\n9390\n    South America\n6795\n    Antarctica\n5500\n    Europe\n3745\n    Australia\n2968\n    Greenland\n840\n    New Guinea\n306\n    Borneo\n280\n  \n  \n  \n\n\n\ngt_tbl <- \n  gt_tbl |>\n  tab_header(\n    title = \"Grandes masas de tierra del mundo\",\n    subtitle = \"Top 10 de las más grandes\"\n  )\n\ngt_tbl\n\n\n\n\n\n  \n    \n      Grandes masas de tierra del mundo\n    \n    \n      Top 10 de las más grandes\n    \n    \n      name\n      size\n    \n  \n  \n    Asia\n16988\n    Africa\n11506\n    North America\n9390\n    South America\n6795\n    Antarctica\n5500\n    Europe\n3745\n    Australia\n2968\n    Greenland\n840\n    New Guinea\n306\n    Borneo\n280"
+    "text": "2.1 Table header\nPara agregar un encabezado a nuestra tabla usamos la función tab_header() y así podemos incluir títulos y subtítulos de ser necesario.\nAntes nuestra tabla se veía así\n\n\n\n\n\n\n  \n    \n    \n      name\n      size\n    \n  \n  \n    Asia\n16988\n    Africa\n11506\n    North America\n9390\n    South America\n6795\n    Antarctica\n5500\n    Europe\n3745\n    Australia\n2968\n    Greenland\n840\n    New Guinea\n306\n    Borneo\n280\n  \n  \n  \n\n\n\n\nAgregamos un título y un subtítulo y se visualiza así\n\ngt_tbl <- \n  gt_tbl |>\n  tab_header(\n    title = \"Grandes masas de tierra del mundo\",\n    subtitle = \"Top 10 de las más grandes\"\n  )\n\ngt_tbl\n\n\n\n\n\n  \n    \n      Grandes masas de tierra del mundo\n    \n    \n      Top 10 de las más grandes\n    \n    \n      name\n      size\n    \n  \n  \n    Asia\n16988\n    Africa\n11506\n    North America\n9390\n    South America\n6795\n    Antarctica\n5500\n    Europe\n3745\n    Australia\n2968\n    Greenland\n840\n    New Guinea\n306\n    Borneo\n280"
   },
   {
     "objectID": "Agregar Partes.html#stub-y-stub-head",
     "href": "Agregar Partes.html#stub-y-stub-head",
     "title": "2  Agregar partes a una tabla simple",
-    "section": "2.2 Stub y Stub Head",
-    "text": "2.2 Stub y Stub Head"
+    "section": "2.3 Stub y Stub Head",
+    "text": "2.3 Stub y Stub Head"
   },
   {
     "objectID": "Agregar Partes.html#column-labels",
     "href": "Agregar Partes.html#column-labels",
     "title": "2  Agregar partes a una tabla simple",
-    "section": "2.3 Column labels",
-    "text": "2.3 Column labels"
+    "section": "2.4 Column labels",
+    "text": "2.4 Column labels"
   },
   {
     "objectID": "Agregar Partes.html#table-footer",
     "href": "Agregar Partes.html#table-footer",
     "title": "2  Agregar partes a una tabla simple",
-    "section": "2.4 Table footer",
-    "text": "2.4 Table footer"
+    "section": "2.2 Table footer",
+    "text": "2.2 Table footer\nAhora le vamos a incluir referencias y algunas notas en ciertas columnas, para eso usaremos la función tab_source_note"
   }
 ]

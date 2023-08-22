@@ -18,9 +18,11 @@ Para incluir cada una de estas partes se utiliza la familia de las funciones `ta
 
 Para agregar un encabezado a nuestra tabla usamos la función `tab_header()` y así podemos incluir títulos y subtítulos de ser necesario.
 
-``` {r}
-#| eval: false
+Antes nuestra tabla se veía así
 
+``` {r}
+#| echo: false
+#| warning: false
 suppressMessages(library(gt))
 suppressMessages(library(dplyr))
 islands_tbl <- 
@@ -31,24 +33,63 @@ islands_tbl <-
   arrange(desc(size)) |>
   slice(1:10)
 
-islands_tbl
 (gt_tbl <- gt(islands_tbl))
-
 ```
 
+Agregamos un título y un subtítulo y se visualiza así
+
 ``` {r}
-gt_tbl <- 
+gt_tbl1 <- 
   gt_tbl |>
   tab_header(
     title = "Grandes masas de tierra del mundo",
     subtitle = "Top 10 de las más grandes"
   )
 
-gt_tbl
+gt_tbl1
+```
+
+También podemos usar herramientas de MarkDown utilizando la función `md()`.... TOCA REVISARLO PORQUE NO ME FUNCIONA EL MD
+
+
+## Table footer
+
+Ahora le vamos a incluir referencias y algunas notas en ciertas columnas, para eso usaremos la función `tab_source_note`
+
+``` {r}
+gt_tbl2 <- 
+  gt_tbl1 |>
+  tab_source_note(
+    source_note = "Recurso: The World Almanac and Book of Facts, 1975, página 406."
+  ) |>
+  tab_source_note(
+    source_note = "Referencia: McNeil, D. R. (1977) Interactive Data Analysis. Wiley."
+  )
+
+gt_tbl2
+```
+
+Ahora agregamos una nota al pie de página con la función `tab_footnote()`, también es necesario usar la función `cells_body`para especificar el lugar en el que irá el pequeño número que dirige al lector de la tabla a la nota al pie de página.
+
+Hay varias formas de especificar los argumentos `rows` y `columns` de `cells_body()`, estas son:
+
+* Un vector de nombres de columnas o nombres de filas
+* Un vector con índices de columnas o de filas
+* Usando la función de selección `c()`
+
+```{r}
+gt_tbl3 <- 
+  gt_tbl2 |>
+  tab_footnote(
+    footnote = "América.",
+    locations = cells_body(columns = name, rows = 3:4)
+  )
+
+# Show the gt table
+gt_tbl3
 ```
 
 ## Stub y Stub Head
 
 ## Column labels
 
-## Table footer
