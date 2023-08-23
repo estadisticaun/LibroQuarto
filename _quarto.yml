@@ -17,6 +17,8 @@ format:
   html:
     theme: cosmo
     css: styles.css
+    link-external-icon: true
+    link-external-newwindow: true
   pdf:
     documentclass: scrreprt
 

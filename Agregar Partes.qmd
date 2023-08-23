@@ -76,6 +76,9 @@ Hay varias formas de especificar los argumentos `rows` y `columns` de `cells_bod
 * Un vector de nombres de columnas o nombres de filas
 * Un vector con índices de columnas o de filas
 * Usando la función de selección `c()`
+* Usando una de las funciones `starts_with()`, `ends_with()`, `contains()`, `matches()`, `one_of()`, y `everything()`.
+
+En nuestro ejemplo, en las filas donde *"name"* es *"North America"* y *"South America"* pondremos una nota al pie de página que diga *"América"*. Para eso, especificamos que el número se debe ubicar en la columna *"name"* (`columns=name`) en las filas $3$ y $4$ (`rows=3:4`).
 
 ```{r}
 gt_tbl3 <- 
@@ -85,11 +88,108 @@ gt_tbl3 <-
     locations = cells_body(columns = name, rows = 3:4)
   )
 
-# Show the gt table
 gt_tbl3
 ```
 
-## Stub y Stub Head
+También es posible filtrar las filas o columnas usando los operadores usuales "$==$","$>$" y "$<$". En nuestro ejemplo, agreguemos la nota al pie de página para aquellas filas donde *size* es mayor a $6000$ y menor a $16000$, así
+
+```{r}
+gt_tbl4 <- 
+  gt_tbl2 |>
+  tab_footnote(
+    footnote = "size (tamaño) es mayor que 6000 y menor que 16000",
+    locations = cells_body(columns = name, rows = size>6000 & size<16000)
+  )
+
+gt_tbl4
+```
+
+Por defecto, se pone un número pequeño para hacer referencia al pie de página, sin embargo, podemos modificarlo usando `opt_footnote_marks()`
+
+```{r}
+gt_tbl4 <- 
+  gt_tbl2 |>
+  tab_footnote(
+    footnote = "size (tamaño) es mayor que 6000 y menor que 16000",
+    locations = cells_body(columns = name, rows = size>6000 & size<16000)
+  ) |>
+opt_footnote_marks(marks = c("*", "+"))
+
+gt_tbl4
+```
+
+Finalmente, cabe mencionar que es posible agregar cuantas referencias y notas al pie de página se desee. Las otras funciones `cells_*()` permiten agregar la nota al pie de página en otras partes de la tabla como títulos, subtítulos, stubs, entre otras. Puede encontrar información más detallada de las funciones `cells_*()` del paquete *gt*  [aquí](https://search.r-project.org/CRAN/refmans/gt/html/cells_body.html#:~:text=The%20cells_body()%20function%20is,targeted%20cells%20with%20text_transform()%20.)
+
+## Stub
+
+Un ***Stub*** es la parte izquierda de la fila donde se encuentran los nombres de las filas o los nombres de los grupos de filas. El término ***Stub Head*** hace referencia al "título" de los *stubs* de la tabla. 
+
+En la librería *gt* es necesario especificar cuál es la columna que tiene los *"nombres"* de las filas. En nuestro ejemplo, el tibble *islands_tbl* tiene DOS columnas, debemos especificar que la columna ***names*** tiene los nombres de las filas y a partir de ella formaremos los *stubs*, y que la columna ***size*** es la única columna, esto lo hacemos con la función `gt()` y el argumento `rowname_col` así
+
+```{r}
+gt_tbl5 <- 
+  islands_tbl |>
+  gt(rowname_col = "name")
+
+gt_tbl5
+```
+
+Ahor sí podemos formar los grupos de filas y asignar los *stubs*. Iniciamos con el *stub head* al que llamaremos "Masa terrestre" con la función `tab_stubhead()` así
+
+``` {r}
+gt_tbl6 <- 
+  gt_tbl5 |>
+  tab_stubhead(label = "Masa terrestre")
+
+gt_tbl6
+```
+
+A continuación, agrupamos las filas y asignamos el correspondiente *stub* con la función `tab_row_group()`
+
+``` {r}
+gt_tbl7 <- 
+  gt_tbl6 |> 
+  tab_row_group(
+    label = "Continente",
+    rows = 1:6
+  ) |>
+  tab_row_group(
+    label = "País",
+    rows = c("Australia", "Greenland")
+  ) |>
+  tab_row_group(
+    label = "Subregión",
+    rows = c("New Guinea", "Borneo")
+  )
+
+gt_tbl7
+```
+
+Ahora agregamos los otros elementos de la tabla y nos queda 
+
+``` {r}
+gt_tbl8 <- 
+  gt_tbl7 |> 
+  tab_header(
+    title = "Grandes masas de tierra del mundo",
+    subtitle = "Top 10 de las más grandes"
+  ) |>
+  tab_source_note(
+    source_note = "Recurso: The World Almanac and Book of Facts, 1975, página 406."
+  ) |>
+  tab_source_note(
+    source_note = "Referencia: McNeil, D. R. (1977) Interactive Data Analysis. Wiley."
+  ) |>
+  tab_footnote(
+    footnote = "size (tamaño) es mayor que 6000 y menor que 16000",
+    locations = cells_body(columns = size, rows = size>6000 & size<16000)
+  ) |>
+opt_footnote_marks(marks = c("*", "+"))
+
+gt_tbl8
+```
+
+Otra forma, tal vez un poco más sencilla, para generar los *stubs* es cuando en la base de datos original existe una columna con los nombres de los grupos de las filas, en el ejemplo, que en *islands_tbl* existiera la columna ***nombre_grupos*** donde aparecen *Subregión*, *Continente* y *País*, de modo que no sería necesario usar la función `tab_row_group()` para formar cada grupo, sino que simplemente usaríamos el siguiente fragmento del código: "`gt(islands_tbl, rowname_col = "name", groupname_col = "nombre_grupos") |> ...`".
 
 ## Column labels
 
