@@ -95,6 +95,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <meta name="quarto:offset" content="./">
 <link href="./Agregar Partes.html" rel="next">
 <link href="./index.html" rel="prev">
+<link href="./Imagenes/Logos/Escudo_UNAL.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -205,12 +206,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Usando la base de datos de R llamada islands, que es un vector, crearemos un objeto <em>tibble</em> utilizando el paquete <em>dplyr</em>.</p>
+<p>Usando la base de datos de R llamada islands, que es un vector (que contiene el área en miles de millas cuadradas de masas terrestres de más de 10.000 millas cuadaradas), crearemos un objeto <em>tibble</em> utilizando el paquete <em>dplyr</em>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar libreria</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(dplyr))</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las 10 islas más grandes en el mundo</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las 10 masas terrestres más grandes en el mundo</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>islands_tbl <span class="ot">&lt;-</span> </span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="fu">names</span>(islands),</span>
@@ -219,21 +220,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(size)) <span class="sc">|&gt;</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>islands_tbl</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Cambiamos a español los nombres de las columnas</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(islands_tbl)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Nombre"</span>,<span class="st">"Tamaño"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>islands_tbl</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 2
-   name           size
-   &lt;chr&gt;         &lt;dbl&gt;
- 1 Asia          16988
- 2 Africa        11506
- 3 North America  9390
- 4 South America  6795
- 5 Antarctica     5500
- 6 Europe         3745
- 7 Australia      2968
- 8 Greenland       840
- 9 New Guinea      306
-10 Borneo          280</code></pre>
+   Nombre        Tamaño
+   &lt;chr&gt;          &lt;dbl&gt;
+ 1 Asia           16988
+ 2 Africa         11506
+ 3 North America   9390
+ 4 South America   6795
+ 5 Antarctica      5500
+ 6 Europe          3745
+ 7 Australia       2968
+ 8 Greenland        840
+ 9 New Guinea       306
+10 Borneo           280</code></pre>
 </div>
 </div>
 <p>Dado que <code>islands_tbl</code> es un <em>tibble</em>, ahora tenemos una entrada adecuada para <em>gt</em>. Si pasamos <code>islands_tbl</code> a la función <em>gt()</em>, obtendremos una tabla <em>gt</em> como resultado. Por cierto, también podríamos haber utilizado un data frame en su lugar como datos de tabla válidos para <em>gt</em>.</p>
@@ -247,23 +251,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>(gt_tbl <span class="ot">&lt;-</span> <span class="fu">gt</span>(islands_tbl))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div id="lraobxbane" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lraobxbane table {
+<div id="ocsqopxfkk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ocsqopxfkk table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lraobxbane thead, #lraobxbane tbody, #lraobxbane tfoot, #lraobxbane tr, #lraobxbane td, #lraobxbane th {
+#ocsqopxfkk thead, #ocsqopxfkk tbody, #ocsqopxfkk tfoot, #ocsqopxfkk tr, #ocsqopxfkk td, #ocsqopxfkk th {
   border-style: none;
 }
 
-#lraobxbane p {
+#ocsqopxfkk p {
   margin: 0;
   padding: 0;
 }
 
-#lraobxbane .gt_table {
+#ocsqopxfkk .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -289,12 +293,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-left-color: #D3D3D3;
 }
 
-#lraobxbane .gt_caption {
+#ocsqopxfkk .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lraobxbane .gt_title {
+#ocsqopxfkk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -306,7 +310,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-width: 0;
 }
 
-#lraobxbane .gt_subtitle {
+#ocsqopxfkk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -318,7 +322,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-width: 0;
 }
 
-#lraobxbane .gt_heading {
+#ocsqopxfkk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -330,13 +334,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#lraobxbane .gt_bottom_border {
+#ocsqopxfkk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lraobxbane .gt_col_headings {
+#ocsqopxfkk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -351,7 +355,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#lraobxbane .gt_col_heading {
+#ocsqopxfkk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -371,7 +375,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#lraobxbane .gt_column_spanner_outer {
+#ocsqopxfkk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -383,15 +387,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 4px;
 }
 
-#lraobxbane .gt_column_spanner_outer:first-child {
+#ocsqopxfkk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lraobxbane .gt_column_spanner_outer:last-child {
+#ocsqopxfkk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lraobxbane .gt_column_spanner {
+#ocsqopxfkk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -403,11 +407,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   width: 100%;
 }
 
-#lraobxbane .gt_spanner_row {
+#ocsqopxfkk .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lraobxbane .gt_group_heading {
+#ocsqopxfkk .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -433,7 +437,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   text-align: left;
 }
 
-#lraobxbane .gt_empty_group_heading {
+#ocsqopxfkk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -448,15 +452,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: middle;
 }
 
-#lraobxbane .gt_from_md > :first-child {
+#ocsqopxfkk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lraobxbane .gt_from_md > :last-child {
+#ocsqopxfkk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lraobxbane .gt_row {
+#ocsqopxfkk .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -475,7 +479,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#lraobxbane .gt_stub {
+#ocsqopxfkk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -488,7 +492,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#lraobxbane .gt_stub_row_group {
+#ocsqopxfkk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -502,15 +506,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: top;
 }
 
-#lraobxbane .gt_row_group_first td {
+#ocsqopxfkk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lraobxbane .gt_row_group_first th {
+#ocsqopxfkk .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lraobxbane .gt_summary_row {
+#ocsqopxfkk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -520,16 +524,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#lraobxbane .gt_first_summary_row {
+#ocsqopxfkk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lraobxbane .gt_first_summary_row.thick {
+#ocsqopxfkk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lraobxbane .gt_last_summary_row {
+#ocsqopxfkk .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -539,7 +543,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#lraobxbane .gt_grand_summary_row {
+#ocsqopxfkk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -549,7 +553,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#lraobxbane .gt_first_grand_summary_row {
+#ocsqopxfkk .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -559,7 +563,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-color: #D3D3D3;
 }
 
-#lraobxbane .gt_last_grand_summary_row_top {
+#ocsqopxfkk .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -569,11 +573,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#lraobxbane .gt_striped {
+#ocsqopxfkk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lraobxbane .gt_table_body {
+#ocsqopxfkk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -582,7 +586,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#lraobxbane .gt_footnotes {
+#ocsqopxfkk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -596,7 +600,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#lraobxbane .gt_footnote {
+#ocsqopxfkk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -605,7 +609,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#lraobxbane .gt_sourcenotes {
+#ocsqopxfkk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -619,7 +623,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#lraobxbane .gt_sourcenote {
+#ocsqopxfkk .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -627,63 +631,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#lraobxbane .gt_left {
+#ocsqopxfkk .gt_left {
   text-align: left;
 }
 
-#lraobxbane .gt_center {
+#ocsqopxfkk .gt_center {
   text-align: center;
 }
 
-#lraobxbane .gt_right {
+#ocsqopxfkk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lraobxbane .gt_font_normal {
+#ocsqopxfkk .gt_font_normal {
   font-weight: normal;
 }
 
-#lraobxbane .gt_font_bold {
+#ocsqopxfkk .gt_font_bold {
   font-weight: bold;
 }
 
-#lraobxbane .gt_font_italic {
+#ocsqopxfkk .gt_font_italic {
   font-style: italic;
 }
 
-#lraobxbane .gt_super {
+#ocsqopxfkk .gt_super {
   font-size: 65%;
 }
 
-#lraobxbane .gt_footnote_marks {
+#ocsqopxfkk .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lraobxbane .gt_asterisk {
+#ocsqopxfkk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lraobxbane .gt_indent_1 {
+#ocsqopxfkk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lraobxbane .gt_indent_2 {
+#ocsqopxfkk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lraobxbane .gt_indent_3 {
+#ocsqopxfkk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lraobxbane .gt_indent_4 {
+#ocsqopxfkk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lraobxbane .gt_indent_5 {
+#ocsqopxfkk .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -691,31 +695,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <thead>
     
     <tr class="gt_col_headings">
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="name">name</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="size">size</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Nombre">Nombre</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Tamaño">Tamaño</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td headers="name" class="gt_row gt_left">Asia</td>
-<td headers="size" class="gt_row gt_right">16988</td></tr>
-    <tr><td headers="name" class="gt_row gt_left">Africa</td>
-<td headers="size" class="gt_row gt_right">11506</td></tr>
-    <tr><td headers="name" class="gt_row gt_left">North America</td>
-<td headers="size" class="gt_row gt_right">9390</td></tr>
-    <tr><td headers="name" class="gt_row gt_left">South America</td>
-<td headers="size" class="gt_row gt_right">6795</td></tr>
-    <tr><td headers="name" class="gt_row gt_left">Antarctica</td>
-<td headers="size" class="gt_row gt_right">5500</td></tr>
-    <tr><td headers="name" class="gt_row gt_left">Europe</td>
-<td headers="size" class="gt_row gt_right">3745</td></tr>
-    <tr><td headers="name" class="gt_row gt_left">Australia</td>
-<td headers="size" class="gt_row gt_right">2968</td></tr>
-    <tr><td headers="name" class="gt_row gt_left">Greenland</td>
-<td headers="size" class="gt_row gt_right">840</td></tr>
-    <tr><td headers="name" class="gt_row gt_left">New Guinea</td>
-<td headers="size" class="gt_row gt_right">306</td></tr>
-    <tr><td headers="name" class="gt_row gt_left">Borneo</td>
-<td headers="size" class="gt_row gt_right">280</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">Asia</td>
+<td headers="Tamaño" class="gt_row gt_right">16988</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">Africa</td>
+<td headers="Tamaño" class="gt_row gt_right">11506</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">North America</td>
+<td headers="Tamaño" class="gt_row gt_right">9390</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">South America</td>
+<td headers="Tamaño" class="gt_row gt_right">6795</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">Antarctica</td>
+<td headers="Tamaño" class="gt_row gt_right">5500</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">Europe</td>
+<td headers="Tamaño" class="gt_row gt_right">3745</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">Australia</td>
+<td headers="Tamaño" class="gt_row gt_right">2968</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">Greenland</td>
+<td headers="Tamaño" class="gt_row gt_right">840</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">New Guinea</td>
+<td headers="Tamaño" class="gt_row gt_right">306</td></tr>
+    <tr><td headers="Nombre" class="gt_row gt_left">Borneo</td>
+<td headers="Tamaño" class="gt_row gt_right">280</td></tr>
   </tbody>
   
   
@@ -723,7 +727,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>Es una tabla básica, pero se le pueden agregar títulos, subtítulos, grupos, subgrupos, y más, según los datos que tengamos y la especificación que le demos a la tabla, como veremos más adelante.</p>
+<p>Es una tabla básica, pero se le pueden agregar títulos, subtítulos, grupos, subgrupos, y más, según los datos que tengamos y la especificación que le demos a la tabla, como veremos más adelante en <a href="Agregar Partes.html"><span>Capítulo&nbsp;2</span></a>.</p>
 
 
 
@@ -859,6 +863,22 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          // default icon
+          link.classList.add("external");
+      }
+    }
 });
 </script>
 

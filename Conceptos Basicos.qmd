@@ -1,12 +1,12 @@
 # Conceptos Básicos {#sec-conceptos}
 
-Usando la base de datos de R llamada islands, que es un vector, crearemos un objeto *tibble* utilizando el paquete *dplyr*.
+Usando la base de datos de R llamada islands, que es un vector (que contiene el área en miles de millas cuadradas de masas terrestres de más de 10.000 millas cuadaradas), crearemos un objeto *tibble* utilizando el paquete *dplyr*.
 
 ```{r}
 # Cargar libreria
 suppressMessages(library(dplyr))
 
-# Obtener las 10 islas más grandes en el mundo
+# Obtener las 10 masas terrestres más grandes en el mundo
 islands_tbl <- 
   tibble(
     name = names(islands),
@@ -14,6 +14,9 @@ islands_tbl <-
   ) |>
   arrange(desc(size)) |>
   slice(1:10)
+
+# Cambiamos a español los nombres de las columnas
+names(islands_tbl)<-c("Nombre","Tamaño")
 
 islands_tbl
 ```
@@ -30,4 +33,4 @@ suppressMessages(library(gt))
 ```
 
 
-Es una tabla básica, pero se le pueden agregar títulos, subtítulos, grupos, subgrupos, y más, según los datos que tengamos y la especificación que le demos a la tabla, como veremos más adelante.
+Es una tabla básica, pero se le pueden agregar títulos, subtítulos, grupos, subgrupos, y más, según los datos que tengamos y la especificación que le demos a la tabla, como veremos más adelante en @sec-partes.

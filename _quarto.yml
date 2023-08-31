@@ -10,6 +10,7 @@ book:
     - "Conceptos Basicos.qmd"
     - "Agregar Partes.qmd"
     - Referencias.qmd
+  favicon: 'Imagenes/Logos/Escudo_UNAL.png'
 
 bibliography: references.bib
 

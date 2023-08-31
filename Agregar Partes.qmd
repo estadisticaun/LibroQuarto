@@ -1,4 +1,4 @@
-# Agregar partes a una tabla simple
+# Agregar partes a una tabla simple {#sec-partes}
 
 Con la librería *gt* podemos personalizar la tabla como deseemos. A continuación podemos apreciar un ejemplo de la estructura de una tabla creada con *gt*
 
@@ -12,9 +12,9 @@ Las partes son:
 * ***Table body*** donde están las filas y las columnas "originales".
 * ***Table footer***, que puede tener las notas de pie de página y algunas referencias.
 
-Para incluir cada una de estas partes se utiliza la familia de las funciones `tab_parte()`.
+Para incluir cada una de estas partes se utiliza la familia de las funciones `tab_*()`.
 
-## Table header
+## Título y subtítulo (*Table header*)
 
 Para agregar un encabezado a nuestra tabla usamos la función `tab_header()` y así podemos incluir títulos y subtítulos de ser necesario.
 
@@ -23,8 +23,12 @@ Antes nuestra tabla se veía así
 ``` {r}
 #| echo: false
 #| warning: false
+#| label: fig-basica
+#| fig-cap: "Tabla básica de `islands`"
+
 suppressMessages(library(gt))
 suppressMessages(library(dplyr))
+
 islands_tbl <- 
   tibble(
     name = names(islands),
@@ -33,10 +37,12 @@ islands_tbl <-
   arrange(desc(size)) |>
   slice(1:10)
 
+names(islands_tbl)<-c("Nombre","Tamaño")
+
 (gt_tbl <- gt(islands_tbl))
 ```
 
-Agregamos un título y un subtítulo y se visualiza así
+Agregamos un título y un subtítulo, y @fig-basica se visualiza así
 
 ``` {r}
 gt_tbl1 <- 
@@ -46,13 +52,14 @@ gt_tbl1 <-
     subtitle = "Top 10 de las más grandes"
   )
 
+# Visualizamos la tabla
 gt_tbl1
 ```
 
 También podemos usar herramientas de MarkDown utilizando la función `md()`.... TOCA REVISARLO PORQUE NO ME FUNCIONA EL MD
 
 
-## Table footer
+## Referencias y notas al pie de página (*Table footer*)
 
 Ahora le vamos a incluir referencias y algunas notas en ciertas columnas, para eso usaremos la función `tab_source_note`
 
@@ -66,6 +73,7 @@ gt_tbl2 <-
     source_note = "Referencia: McNeil, D. R. (1977) Interactive Data Analysis. Wiley."
   )
 
+# Visualizamos la tabla
 gt_tbl2
 ```
 
@@ -85,9 +93,10 @@ gt_tbl3 <-
   gt_tbl2 |>
   tab_footnote(
     footnote = "América.",
-    locations = cells_body(columns = name, rows = 3:4)
+    locations = cells_body(columns = Nombre, rows = 3:4)
   )
 
+# Visualizamos la tabla
 gt_tbl3
 ```
 
@@ -97,10 +106,11 @@ También es posible filtrar las filas o columnas usando los operadores usuales "
 gt_tbl4 <- 
   gt_tbl2 |>
   tab_footnote(
-    footnote = "size (tamaño) es mayor que 6000 y menor que 16000",
-    locations = cells_body(columns = name, rows = size>6000 & size<16000)
+    footnote = "El tamaño es mayor que 6000 y menor que 16000",
+    locations = cells_body(columns = Nombre, rows = Tamaño>6000 & Tamaño<16000)
   )
 
+# Visualizamos la tabla
 gt_tbl4
 ```
 
@@ -110,26 +120,27 @@ Por defecto, se pone un número pequeño para hacer referencia al pie de página
 gt_tbl4 <- 
   gt_tbl2 |>
   tab_footnote(
-    footnote = "size (tamaño) es mayor que 6000 y menor que 16000",
-    locations = cells_body(columns = name, rows = size>6000 & size<16000)
+    footnote = "El tamaño es mayor que 6000 y menor que 16000",
+    locations = cells_body(columns = Nombre, rows = Tamaño>6000 & Tamaño<16000)
   ) |>
 opt_footnote_marks(marks = c("*", "+"))
 
+# Visualizamos la tabla
 gt_tbl4
 ```
 
 Finalmente, cabe mencionar que es posible agregar cuantas referencias y notas al pie de página se desee. Las otras funciones `cells_*()` permiten agregar la nota al pie de página en otras partes de la tabla como títulos, subtítulos, stubs, entre otras. Puede encontrar información más detallada de las funciones `cells_*()` del paquete *gt*  [aquí](https://search.r-project.org/CRAN/refmans/gt/html/cells_body.html#:~:text=The%20cells_body()%20function%20is,targeted%20cells%20with%20text_transform()%20.)
 
-## Stub
+## Grupos de filas (*Stub*)
 
 Un ***Stub*** es la parte izquierda de la fila donde se encuentran los nombres de las filas o los nombres de los grupos de filas. El término ***Stub Head*** hace referencia al "título" de los *stubs* de la tabla. 
 
-En la librería *gt* es necesario especificar cuál es la columna que tiene los *"nombres"* de las filas. En nuestro ejemplo, el tibble *islands_tbl* tiene DOS columnas, debemos especificar que la columna ***names*** tiene los nombres de las filas y a partir de ella formaremos los *stubs*, y que la columna ***size*** es la única columna, esto lo hacemos con la función `gt()` y el argumento `rowname_col` así
+En la librería *gt* es necesario especificar cuál es la columna que tiene los *"nombres"* de las filas. En nuestro ejemplo, el tibble *islands_tbl* tiene DOS columnas, debemos especificar que la columna ***Nombre*** tiene los nombres de las filas y a partir de ella formaremos los *stubs*, y que la columna ***size*** es la única columna, esto lo hacemos con la función `gt()` y el argumento `rowname_col` así
 
 ```{r}
 gt_tbl5 <- 
   islands_tbl |>
-  gt(rowname_col = "name")
+  gt(rowname_col = "Nombre")
 
 gt_tbl5
 ```
@@ -162,6 +173,7 @@ gt_tbl7 <-
     rows = c("New Guinea", "Borneo")
   )
 
+# Visualizamos la tabla
 gt_tbl7
 ```
 
@@ -181,15 +193,47 @@ gt_tbl8 <-
     source_note = "Referencia: McNeil, D. R. (1977) Interactive Data Analysis. Wiley."
   ) |>
   tab_footnote(
-    footnote = "size (tamaño) es mayor que 6000 y menor que 16000",
-    locations = cells_body(columns = size, rows = size>6000 & size<16000)
+    footnote = "El tamaño es mayor que 6000 y menor que 16000",
+    locations = cells_body(columns = Tamaño, rows = Tamaño>6000 & Tamaño<16000)
   ) |>
 opt_footnote_marks(marks = c("*", "+"))
 
+# Visualizamos la tabla
 gt_tbl8
 ```
 
 Otra forma, tal vez un poco más sencilla, para generar los *stubs* es cuando en la base de datos original existe una columna con los nombres de los grupos de las filas, en el ejemplo, que en *islands_tbl* existiera la columna ***nombre_grupos*** donde aparecen *Subregión*, *Continente* y *País*, de modo que no sería necesario usar la función `tab_row_group()` para formar cada grupo, sino que simplemente usaríamos el siguiente fragmento del código: "`gt(islands_tbl, rowname_col = "name", groupname_col = "nombre_grupos") |> ...`".
 
-## Column labels
+## Grupos de columnas (*Spanner*)
 
+Así como en la sección anterior hicimos grupos de filas y les pusimos nombres a dichos gurpos, también es posible crear grupos de filas y asignarles títulos utilizando la función `tab_spanner()`, dichos grupos se conocen como ***Spanner***.
+
+Para mostrar un ejemplo, usaremos los datos disponibles en `airquality` , esta base de datos tiene registro del día, mes y las mediciones de la calidad del aire en Nueva York de 153 días entre Mayo a Septiembre de 1973, tiene variables como ozono, radiación solar, temperatura, entre otras. Para ilustrar el uso de la función `tab_stanner()`, vamos a crear dos grupos de columnas, uno asociado a las mediciones (ozono, radiación solar, temperatura, ...) y otro relacionado con la fecha de registro.
+
+``` {r}
+# Primero vamos a cambiar a español los nombres de las variables de la base de datos "airquality"
+calidad_aire<-airquality |>
+  slice(1:10)
+
+names(calidad_aire)<-c("Ozono","R.Solar","Viento","Temp","Mes","Día")
+
+# Creamos la tabla con gt
+gt_tbl_air <- 
+  gt(calidad_aire) |>
+  tab_header(
+    title = "Mediciones de la calidad del aire en Nueva York",
+    subtitle = "Mediciones diarias en Nueva York de mayo a septiembre de 1973"
+  ) |>
+  # Aquí creamos el primer grupo de columnas refererentes a la fecha
+  tab_spanner(
+    label = "Fecha", # Agregamos el título del grupo de columnas
+    columns = c(Mes, Día) # Seleccionamos las columnas que se van a agrupar en "Fecha"
+  ) |>
+  tab_spanner(
+    label = "Mediciones",
+    columns = c(Ozono, R.Solar, Viento, Temp)
+  )
+
+# Visualizamos la tabla
+gt_tbl_air
+```
