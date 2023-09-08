@@ -1,0 +1,80 @@
+# Funciones de *gt* avanzadas {#sec-funavan}
+
+En este capítulo veremos algunas otras funciones "más avanzadas" de *gt*. Para utilizar dichas funciones es necesario tener algunos conocimiento de HTML, CSS, entre otros.
+
+
+## Personalización con CSS
+
+El paquete *gt* tiene la función `opt_css` que nos permite personalizar la tabla aplicando nuestro propio CSS. Para visualizar esto, vamos a crear una tabla usando la base de datos *exibble* disponible en R, modificaremos el color de fondo de la tabla (`one .gt_table {background-color:}`), el espacio de cada para fila de la gráfica (`#one .gt_row {padding:}`), haremos que los títulos de las columnas se vean centrados (`#one .gt_col_heading {text-align:}`) y también que cambie el color de fondo de una fila cuando pongamos el mouse sobre ella (`#one tr:hover {background-color:}`)
+
+``` {r}
+suppressMessages(library(gt))
+suppressMessages(library(dplyr))
+
+exibble %>%
+  dplyr::select(num, currency) %>%
+  gt(id = "one") %>% 
+  fmt_currency(
+    columns = vars(currency),
+    currency = "HKD"
+  ) %>%
+  fmt_scientific(
+    columns = vars(num)
+  ) %>%
+  opt_css(
+    css = "
+    #one .gt_table { 
+      background-color: skyblue;
+    }
+    #one .gt_row {
+      padding: 20px 30px;
+    }
+    #one tr:hover {
+    background-color: #f5f8ff;
+    }
+    #one .gt_col_heading {
+      text-align: center !important;
+    }
+    "
+  )
+```
+¡Quedó preciosa nuestra tabla! Puedes encontrar más opciones de CSS [aquí](https://www.w3schools.com/css/css_table_style.asp).
+
+## Insertar URLs
+
+Utilizando lenguaje HTML podemos agregar URLs en nuestra tabla. Para ilustrarlo, vamos a crear una una tabla con tres sitios web y sus respectivas direcciones.
+
+``` {r}
+library(htmltools)
+
+# Primero creamos la base de datos con los sitios y las direcciones
+ex_sites <- data.frame(
+  Dirección = c("https://gmail.com", "https://youtube.com", "https://es.duolingo.com/"),
+  Sitio = c("Gmail", "YouTube", "Duolingo")
+)
+
+# Ahora si creamos la tabla
+gt(ex_sites) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(Dirección)), # Comenzamos editando la columna con las direcciones
+    fn = function(x) {
+    purrr::map(x,  ~htmltools::tags$a(href = .x, target = "_blank", .x))
+      }
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(Sitio)),
+    fn = function(x) {
+    purrr::map2(
+      .x = x, .y = ex_sites$Address, 
+      .f = ~glue::glue('<a href="{.y}" target="_blank">{.x}</a>'))
+      }
+  )
+```
+
+## Opción para descargar los datos
+
+## Agregar gráficos
+
+## Agregar *tooltips*
+
+## Agregar iconos 

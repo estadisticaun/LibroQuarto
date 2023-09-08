@@ -2,15 +2,15 @@
 
 Con la librería *gt* podemos personalizar la tabla como deseemos. A continuación podemos apreciar un ejemplo de la estructura de una tabla creada con *gt*
 
-![Partes de una gt Table](Imagenes/Gt table/2. Partes_tabla.png){fig-alt="Partes de una gt Table" fig-align="center" width="80%"}
+![Partes de una gt Table](Imagenes/Gt%20table/2.%20Partes_tabla.png){fig-alt="Partes de una gt Table" fig-align="center" width="80%"}
 
 Las partes son:
 
-* ***Table header***, el encabezado de la tabla, que puede tener título y/o subtítulo.
-* ***Stub* y *Stub Head***, donde se agregan los títulos de las filas de la tabla.
-* ***Column labels*** con los nombres de las columnas
-* ***Table body*** donde están las filas y las columnas "originales".
-* ***Table footer***, que puede tener las notas de pie de página y algunas referencias.
+-   ***Table header***, el encabezado de la tabla, que puede tener título y/o subtítulo.
+-   ***Stub*** **y *Stub Head***, donde se agregan los títulos de las filas de la tabla.
+-   ***Column labels*** con los nombres de las columnas
+-   ***Table body*** donde están las filas y las columnas "originales".
+-   ***Table footer***, que puede tener las notas de pie de página y algunas referencias.
 
 Para incluir cada una de estas partes se utiliza la familia de las funciones `tab_*()`.
 
@@ -20,7 +20,7 @@ Para agregar un encabezado a nuestra tabla usamos la función `tab_header()` y a
 
 Antes nuestra tabla se veía así
 
-``` {r}
+```{r}
 #| echo: false
 #| warning: false
 #| label: fig-basica
@@ -44,26 +44,44 @@ names(islands_tbl)<-c("Nombre","Tamaño")
 
 Agregamos un título y un subtítulo, y @fig-basica se visualiza así
 
-``` {r}
+```{r}
+#| label: fig-italica
+#| fig-cap: "Agregar un título y un subtítulo a la tabla"
 gt_tbl1 <- 
   gt_tbl |>
   tab_header(
     title = "Grandes masas de tierra del mundo",
     subtitle = "Top 10 de las más grandes"
-  )
+  ) 
 
 # Visualizamos la tabla
 gt_tbl1
 ```
 
-También podemos usar herramientas de MarkDown utilizando la función `md()`.... TOCA REVISARLO PORQUE NO ME FUNCIONA EL MD
+Para personalizar nuestro libro es posible utilizar la función `tab_style()` y usaremos la función de ayuda `cell_text()` para, por ejemplo, cambiar el tipo de letra de toda la columna `Nombre` a itálica. Para esto agregamos al código anterior:
 
+```{r}
+#| fig-cap: "Modificación del estilo de letra de la columna nombres"
+gt_tbl1 <- 
+  gt_tbl1 |>
+  tab_style(
+    style = cell_text(style = "italic"), # Indicamos que queremos que la letra sea itálica
+    locations = cells_body(
+      columns = Nombre # Indicamos la columna en la que se desea estilizar la letra
+  ))
+
+# Visualizamos la tabla
+gt_tbl1
+```
+
+Es posible personalizar aún más el estilo de la tabla y agregarle muchas más cosas usando las funciones de referencia (@sec-funcref).
 
 ## Referencias y notas al pie de página (*Table footer*)
 
 Ahora le vamos a incluir referencias y algunas notas en ciertas columnas, para eso usaremos la función `tab_source_note`
 
-``` {r}
+```{r}
+#| fig-cap: "Agregar una referencia a la tabla"
 gt_tbl2 <- 
   gt_tbl1 |>
   tab_source_note(
@@ -81,14 +99,15 @@ Ahora agregamos una nota al pie de página con la función `tab_footnote()`, tam
 
 Hay varias formas de especificar los argumentos `rows` y `columns` de `cells_body()`, estas son:
 
-* Un vector de nombres de columnas o nombres de filas
-* Un vector con índices de columnas o de filas
-* Usando la función de selección `c()`
-* Usando una de las funciones `starts_with()`, `ends_with()`, `contains()`, `matches()`, `one_of()`, y `everything()`.
+-   Un vector de nombres de columnas o nombres de filas
+-   Un vector con índices de columnas o de filas
+-   Usando la función de selección `c()`
+-   Usando una de las funciones `starts_with()`, `ends_with()`, `contains()`, `matches()`, `one_of()`, y `everything()`.
 
 En nuestro ejemplo, en las filas donde *"name"* es *"North America"* y *"South America"* pondremos una nota al pie de página que diga *"América"*. Para eso, especificamos que el número se debe ubicar en la columna *"name"* (`columns=name`) en las filas $3$ y $4$ (`rows=3:4`).
 
 ```{r}
+#| fig-cap: "Agregar una nota al pie de página a la tabla"
 gt_tbl3 <- 
   gt_tbl2 |>
   tab_footnote(
@@ -103,6 +122,7 @@ gt_tbl3
 También es posible filtrar las filas o columnas usando los operadores usuales "$==$","$>$" y "$<$". En nuestro ejemplo, agreguemos la nota al pie de página para aquellas filas donde *size* es mayor a $6000$ y menor a $16000$, así
 
 ```{r}
+#| fig-cap: "Agregar una nota al pie de página a la tabla, usando filtros en la localización"
 gt_tbl4 <- 
   gt_tbl2 |>
   tab_footnote(
@@ -117,6 +137,7 @@ gt_tbl4
 Por defecto, se pone un número pequeño para hacer referencia al pie de página, sin embargo, podemos modificarlo usando `opt_footnote_marks()`
 
 ```{r}
+#| fig-cap: "Modificación de las *marks* de la nota al pie de página"
 gt_tbl4 <- 
   gt_tbl2 |>
   tab_footnote(
@@ -129,15 +150,17 @@ opt_footnote_marks(marks = c("*", "+"))
 gt_tbl4
 ```
 
-Finalmente, cabe mencionar que es posible agregar cuantas referencias y notas al pie de página se desee. Las otras funciones `cells_*()` permiten agregar la nota al pie de página en otras partes de la tabla como títulos, subtítulos, stubs, entre otras. Puede encontrar información más detallada de las funciones `cells_*()` del paquete *gt*  [aquí](https://search.r-project.org/CRAN/refmans/gt/html/cells_body.html#:~:text=The%20cells_body()%20function%20is,targeted%20cells%20with%20text_transform()%20.)
+Finalmente, cabe mencionar que es posible agregar cuantas referencias y notas al pie de página se desee. Las otras funciones `cells_*()` permiten agregar la nota al pie de página en otras partes de la tabla como títulos, subtítulos, stubs, entre otras. Puede encontrar información más detallada de las funciones `cells_*()` del paquete *gt* [aquí](https://search.r-project.org/CRAN/refmans/gt/html/cells_body.html#:~:text=The%20cells_body()%20function%20is,targeted%20cells%20with%20text_transform()%20.)
 
 ## Grupos de filas (*Stub*)
 
-Un ***Stub*** es la parte izquierda de la fila donde se encuentran los nombres de las filas o los nombres de los grupos de filas. El término ***Stub Head*** hace referencia al "título" de los *stubs* de la tabla. 
+Un ***Stub*** es la parte izquierda de la fila donde se encuentran los nombres de las filas o los nombres de los grupos de filas. El término ***Stub Head*** hace referencia al "título" de los *stubs* de la tabla.
 
 En la librería *gt* es necesario especificar cuál es la columna que tiene los *"nombres"* de las filas. En nuestro ejemplo, el tibble *islands_tbl* tiene DOS columnas, debemos especificar que la columna ***Nombre*** tiene los nombres de las filas y a partir de ella formaremos los *stubs*, y que la columna ***size*** es la única columna, esto lo hacemos con la función `gt()` y el argumento `rowname_col` así
 
 ```{r}
+#| label: fig-stub
+#| fig-cap: "Tabla con a columna *Nombre* como stub"
 gt_tbl5 <- 
   islands_tbl |>
   gt(rowname_col = "Nombre")
@@ -145,9 +168,10 @@ gt_tbl5 <-
 gt_tbl5
 ```
 
-Ahor sí podemos formar los grupos de filas y asignar los *stubs*. Iniciamos con el *stub head* al que llamaremos "Masa terrestre" con la función `tab_stubhead()` así
+Sin embargo, tal como podemos observar en @fig-stub, la letra de la columna nombres ya no es itálica, de modo que hemos perdido el estilo que dimos en @fig-italica.Ahora sí podemos formar los grupos de filas y asignar los *stubs*. Iniciamos con el *stub head* al que llamaremos "Masa terrestre" con la función `tab_stubhead()` así
 
-``` {r}
+```{r}
+#| fig-cap: "Tabla con un nombre para los stubs"
 gt_tbl6 <- 
   gt_tbl5 |>
   tab_stubhead(label = "Masa terrestre")
@@ -157,7 +181,7 @@ gt_tbl6
 
 A continuación, agrupamos las filas y asignamos el correspondiente *stub* con la función `tab_row_group()`
 
-``` {r}
+```{r}
 gt_tbl7 <- 
   gt_tbl6 |> 
   tab_row_group(
@@ -177,9 +201,9 @@ gt_tbl7 <-
 gt_tbl7
 ```
 
-Ahora agregamos los otros elementos de la tabla y nos queda 
+Ahora agregamos los otros elementos de la tabla y nos queda
 
-``` {r}
+```{r}
 gt_tbl8 <- 
   gt_tbl7 |> 
   tab_header(
@@ -210,7 +234,7 @@ Así como en la sección anterior hicimos grupos de filas y les pusimos nombres 
 
 Para mostrar un ejemplo, usaremos los datos disponibles en `airquality` , esta base de datos tiene registro del día, mes y las mediciones de la calidad del aire en Nueva York de 153 días entre Mayo a Septiembre de 1973, tiene variables como ozono, radiación solar, temperatura, entre otras. Para ilustrar el uso de la función `tab_stanner()`, vamos a crear dos grupos de columnas, uno asociado a las mediciones (ozono, radiación solar, temperatura, ...) y otro relacionado con la fecha de registro.
 
-``` {r}
+```{r}
 # Primero vamos a cambiar a español los nombres de las variables de la base de datos "airquality"
 calidad_aire<-airquality |>
   slice(1:10)
@@ -237,3 +261,24 @@ gt_tbl_air <-
 # Visualizamos la tabla
 gt_tbl_air
 ```
+
+La librería `gt` nos permite cambiar de posición la disposición de las columnas, así como también modificar los nombres de las columnas. Para cambiar de posición se puede usar la función `cols_move_to_*()`, y para los nombres de las columnas `cols_label()`. Por ejemplo, vamos a mover todas las variables relacionadas con **Fecha** al comiezo de la tabla (a la izquierda), y vamos a agregar las unidades de medida al nombre de las columnas.
+
+```{r}
+gt_tbl_air_2 <- 
+  gt_tbl_air |>
+  cols_move_to_start(
+    columns = c(Mes, Día)
+  ) |>
+  cols_label(
+    Ozono = html("Ozono,<br>ppbV"),
+    R.Solar = html("R.Solar,<br>cal/m<sup>2</sup>"),
+    Viento = html("Viento,<br>mph"),
+    Temp = html("Temp,<br>&deg;F")
+  )
+
+# Visualización de la tabla 
+gt_tbl_air_2
+```
+
+Es considerablemente grande la cantidad de cosas que podemos agregar a nuestra tabla. En este capítulo (@sec-partes) vimos cómo agregar partes "básicas" a la tabla. Pero también podemos agregar muchas más cosas usando las funciones de referencia que puedes estudiar en @sec-funcref.

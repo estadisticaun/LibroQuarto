@@ -9,6 +9,8 @@ book:
     - index.qmd
     - "Conceptos Basicos.qmd"
     - "Agregar Partes.qmd"
+    - "Funciones Referencia.qmd"
+    - "gt avanzado.qmd"
     - Referencias.qmd
   favicon: 'Imagenes/Logos/Escudo_UNAL.png'
 
@@ -16,7 +18,9 @@ bibliography: references.bib
 
 format:
   html:
-    theme: cosmo
+    theme: cerulean
+    fontsize: 1.1em
+    linestretch: 1.7
     css: styles.css
     link-external-icon: true
     link-external-newwindow: true

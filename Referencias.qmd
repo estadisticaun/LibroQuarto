@@ -1,4 +1,16 @@
 # Referencias {.unnumbered}
 
 ::: {#refs}
+[@documentR1]
+
+[@Iannone1]
 :::
+
+[@documentR1]
+
+[@Iannone1]
+
+```{r}
+#| echo: false
+#Blah Blah [see @knuth84, pp. 33-35; also, chap. 1]
+```
