@@ -2,12 +2,12 @@
 
 En este capítulo veremos algunas otras funciones "más avanzadas" de *gt*. Para utilizar dichas funciones es necesario tener algunos conocimiento de HTML, CSS, entre otros.
 
-
 ## Personalización con CSS
 
 El paquete *gt* tiene la función `opt_css` que nos permite personalizar la tabla aplicando nuestro propio CSS. Para visualizar esto, vamos a crear una tabla usando la base de datos *exibble* disponible en R, modificaremos el color de fondo de la tabla (`one .gt_table {background-color:}`), el espacio de cada para fila de la gráfica (`#one .gt_row {padding:}`), haremos que los títulos de las columnas se vean centrados (`#one .gt_col_heading {text-align:}`) y también que cambie el color de fondo de una fila cuando pongamos el mouse sobre ella (`#one tr:hover {background-color:}`)
 
-``` {r}
+```{r}
+#| warning: false
 suppressMessages(library(gt))
 suppressMessages(library(dplyr))
 
@@ -38,13 +38,15 @@ exibble %>%
     "
   )
 ```
+
 ¡Quedó preciosa nuestra tabla! Puedes encontrar más opciones de CSS [aquí](https://www.w3schools.com/css/css_table_style.asp).
 
 ## Insertar URLs
 
 Utilizando lenguaje HTML podemos agregar URLs en nuestra tabla. Para ilustrarlo, vamos a crear una una tabla con tres sitios web y sus respectivas direcciones.
 
-``` {r}
+```{r}
+#| warning: false
 library(htmltools)
 
 # Primero creamos la base de datos con los sitios y las direcciones
@@ -58,23 +60,363 @@ gt(ex_sites) %>%
   text_transform(
     locations = cells_body(columns = vars(Dirección)), # Comenzamos editando la columna con las direcciones
     fn = function(x) {
+      # la función map de purrr aplica una operación a cada elemento de x
     purrr::map(x,  ~htmltools::tags$a(href = .x, target = "_blank", .x))
       }
-  ) %>% 
+  ) %>% # EXPLICAR ESTO
   text_transform(
     locations = cells_body(columns = vars(Sitio)),
     fn = function(x) {
     purrr::map2(
-      .x = x, .y = ex_sites$Address, 
+      .x = x, .y = ex_sites$Dirección, 
       .f = ~glue::glue('<a href="{.y}" target="_blank">{.x}</a>'))
       }
   )
 ```
 
-## Opción para descargar los datos
+## Opción para descargar los datos {#sec-original}
 
-## Agregar gráficos
+Podemos agregar opciones para que quien vea nuestra tabla tenga la opción de descargar los datos, esto es posible usando funciones de HTML y agregando una nota al pie de página con la función `tab_source_note()` de *gt*. Para ilustrarlo, vamos a presentar en una tabla los datos de *mtcars* dsiponibles en R; inicialmente crearemos un archivo .csv con la función `write.csv2`, luego usamos lenguaje HTML para crear un hipervínculo que descarge el archivo .csv, y finalmente agregamos dicho link como una nota al pie de página en la tabla.
+
+```{r}
+#| warning: false
+write.csv2(mtcars, "./file.csv")
+
+encoded <- readLines("./file.csv") %>% # EXPLICAR ESTO
+  paste0(collapse="\n") %>% 
+  openssl::base64_encode() -> encoded
+
+html_encode <- sprintf('data:text/csv;base64,%s', encoded)
+html_csv <- glue::glue(
+  "<a download='mtcars.csv' href='{html_encode}'>CSV Download</a>"
+  )
+
+head(mtcars) %>% 
+  gt() %>% 
+  tab_source_note(html(html_csv))
+```
+
+También existe una manera más sencilla (sin utilizar lenguaje HTML) para agregar la opción de descargar los datos, solo necesitamos la librería *"downloadthis"*, veamos cómo, haciendo uso de nuestro ejemplo con *mtcars*.
+
+```{r}
+#| warning: false
+library(downloadthis)
+
+head(mtcars) %>%
+  gt() %>%
+  tab_source_note(
+    mtcars %>%
+      download_this(
+        output_name = "mtcars", # Cómo se llamará el archivo una vez descargado 
+        output_extension = ".csv", # El archivo es . csv, también puede ser .xlsx
+        button_label = "Download csv", # Cómo se llamará el botón
+        button_type = "default", # Tipo de botón, gtambién puede ser danger, warning, etc
+      )
+  )
+```
+
+Con la función `download_this` podemos personalizar más nuestro botón utilizando lenguaje CSS. Vamos a generar un botón que descargue un archivo .xlsx, de color rojo, letra de tipo "Serif" y borde color negro.
+
+
+``` {r}
+#| warning: false
+attach_excel <- mtcars %>%
+  download_this(
+    output_name = "mtcars",
+    output_extension = ".xlsx", # Excel file type
+    button_label = "Download Excel",
+    class = "buttonExcel"
+  )
+
+head(mtcars) %>%
+  gt() %>%
+  opt_css(
+    css = "
+    .buttonExcel{
+    font-size: 12px;
+    color: #fff;
+    background-color: red;
+    border-color: black;
+    font-family: serif;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 4px;
+    }
+    
+    .buttonExcel:hover,
+    .buttonExcel:active,
+    .buttonExcel:focus,
+    .buttonExcel.active {
+    background: grey;
+    color: #ffffff;
+    border-color: grey;
+    }
+    "
+  ) %>% 
+  tab_source_note(attach_excel)
+```
+
+Para personalizar aún más nuestro botón o en general la opción para descargar los datos, puedes explorar [Introduction to downloadthis](https://cran.r-project.org/web/packages/downloadthis/vignettes/downloadthis.html)
+
+## Gráficos Sparkline {#sec-part}
+
+Los sparklines son gráficos muy pequeños que generalmente se dibujan sin ejes ni coordenadas, se usan para presentar la variación a lo largo del tiempo de cierta medida como la temperatura o algún precio. Crearemos una tabla que muestre un sparkline de *drat* (*Rear axle ratio*) para cada *cyl* (*Number od cylinders*), para ello, haremos uso de la función `text_transform()` donde indicaremos que se trata de un gráfico y modificaremos ciertos aspectos como los límites de los ejes.
+
+
+``` {r}
+#| warning: false
+suppressMessages(library(kableExtra))
+
+mtcars %>%
+  group_by(cyl) %>%
+  summarize(drat_data = list(drat), .groups = "drop") %>%
+  gt() %>%
+  text_transform(
+    locations = cells_body(columns = vars(drat_data)),
+    fn = function(x) {
+      data_in <- purrr::pluck(., "_data", "drat_data")
+      plot <- purrr::map(
+        data_in, ~ kableExtra::spec_plot(
+          .x, ylim = range(mtcars$drat), 
+          same_lim = TRUE, width = 300, height = 70
+          )
+        )
+      
+      plot <- purrr::map_chr(plot, "svg_text")
+    }
+  )
+``` 
 
 ## Agregar *tooltips*
 
-## Agregar iconos 
+Un *tooltip* es una herramienta que de ayuda visual que funciona al posar el cursor sobre algún elemento gráfico y se encarga de informar al usuario respecto a dicho elemento. Inicialmente crearemos una función que genere el *tooltip* usando lenguaje HTML, y para agregar esta super herramienta a la tabla, vamos a modificar el nombre de las columnas con las funciones `cols_label()` y `html()`, ambas de *gt*.
+
+``` {r}
+#| warning: false
+suppressMessages(library(htmltools))
+with_tooltip <- function(value, tooltip) {
+  tags$abbr(
+    style = "text-decoration: underline;
+    text-decoration-style: solid; color: blue",
+    title = tooltip,
+    value
+  ) %>% 
+    as.character()
+}
+
+mtcars %>% 
+  head() %>% 
+  tibble::rownames_to_column() %>% 
+  select(rowname, mpg:hp) %>% 
+  gt() %>% 
+   cols_label(
+    mpg = gt::html(with_tooltip("MPG", "Miles per Gallon")),
+    cyl = gt::html(with_tooltip("CYL", "Number of Cylinders")),
+    disp = gt::html(with_tooltip("DISP", "Displacement")),
+    hp = gt::html(with_tooltip("HP", "Horsepower")),
+  )
+```
+
+## Agregar íconos 
+
+Y ahora, es momento de agregar íconos. En R, existe el paquete *fontawesome* que, junto con la función `fa()`, permiten agregar uno o más íconos Font Awesome. Para adicionarlos en nuestra tabla, nuevamente usaremos la función `text_transform()` de *gt*, ubicamos la columna *cyl* con la función `cells_body` y ahora sí usamos lenguaje HTML y la función `fa()` para que aparezcan los camiones (*truck*,*truck-pickup*,*truck-monster*). 
+
+``` {r}
+#| warning: false
+suppressMessages(library(htmltools))
+mtcars %>% 
+  head() %>% 
+  tibble::rownames_to_column() %>% 
+  select(rowname, mpg:hp) %>%
+  gt() %>% 
+  cols_label(
+    mpg = gt::html(with_tooltip("MPG", "Miles per Gallon")),
+    cyl = gt::html(with_tooltip("CYL", "Number of Cylinders")),
+    disp = gt::html(with_tooltip("DISP", "Displacement")),
+    hp = gt::html(with_tooltip("HP", "Horsepower")),
+  ) %>%
+  text_transform(
+    locations = cells_body(columns = vars(cyl), rows = cyl == 4),
+    fn = function(x){gt::html(fontawesome::fa("truck-pickup", fill = "blue"))}
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(cyl), rows = cyl == 6),
+    fn = function(x){gt::html(fontawesome::fa("truck-moving", fill = "green"))}
+  ) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(cyl), rows = cyl == 8),
+    fn = function(x){gt::html(fontawesome::fa("truck-monster", fill = "red"))}
+  )
+```
+
+No solo puedes agregar carros a tus tablas, puedes agregar cualquier ícono de Font Awesome que esté [aquí](https://rstudio.github.io/fontawesome/articles/icon-reference.html).
+
+También es posible incluir no solo uno sino varios íconos en la tabla, esto puede ser útil en algunos contextos, por ejemplo, para calificar ciertas cosas. A nuestro ejemplo en @sec-original, vamos a agregarle un *rating* con estrellas, para ello crearemos una función, `rating_stars()`, que se encarga de colorear las estrellas dependiendo del *rating*.
+
+``` {r}
+#| warning: false
+
+rating_stars <- function(rating, max_rating = 5) {
+  rounded_rating <- floor(rating + 0.5)  # always round up
+  stars <- lapply(seq_len(max_rating), function(i) {
+    if (i <= rounded_rating) fontawesome::fa("star", fill= "orange") else fontawesome::fa("star", fill= "grey")
+  })
+  label <- sprintf("%s out of %s", rating, max_rating)
+  div_out <- htmltools::div(title = label, "aria-label" = label, role = "img", stars)
+  
+  as.character(div_out) %>% 
+    gt::html()
+}
+
+mtcars %>% 
+  slice(1:5) %>% 
+  mutate(rating = purrr::map(sample(1:5, size = 5, TRUE), rating_stars)) %>% 
+  gt()
+```
+
+## Agregar etiquetas
+
+Las etiquetas también resultan particularmente útiles en muchos contextos, permiten identificar rápidamente alguna característica que es de nuestro interés. Para incluirlas en  nuestra tabla, no es necesario utilizar una función de *gt*, simplemente agregamos una nueva columna *"cylinder"* con la función `add_cyl_color` que hemos creado previamente.
+
+``` {r}
+#| warning: false
+add_cyl_color <- function(cyl){
+      add_color <- if (cyl == 4) {
+        "background: hsl(116, 60%, 90%); color: hsl(116, 30%, 25%);"
+      } else if (cyl == 6) {
+        "background: hsl(230, 70%, 90%); color: hsl(230, 45%, 30%);"
+      } else if (cyl == 8) {
+        "background: hsl(350, 70%, 90%); color: hsl(350, 45%, 30%);"
+      }
+      div_out <- htmltools::div(
+        style = paste(
+          "display: inline-block; padding: 2px 12px; border-radius: 15px; font-weight: 600; font-size: 12px;",
+          add_color
+          ),
+        paste(cyl, "Cylinders")
+      )
+      
+      as.character(div_out) %>% 
+        gt::html()
+}
+
+mtcars %>% 
+  head() %>% 
+  mutate(cylinder = purrr::map(cyl, add_cyl_color)) %>% 
+  gt()
+```
+
+## Agregar una sección expandible
+
+Una sección expandible nos ayuda ahorrando mucho espacio, además, ahí podemos incluir información extra respecto a la tabla. Nuevamente, crearemos un objeto llamado *"source_details"* que lleva la información de la sección con lenguaje HTML, luego usamos `tab_source_note()`, una función de *gt* de la cuál puedes saber más en @sec-footer.
+
+```{r}
+#| warning: false
+library(htmltools)
+
+source_details <- paste0(
+  "<details>", "<summary><strong>Table Key, click to expand</strong></summary>",
+  div("mpg: Miles/gallon"),div("cyl: Cylinders"), div("disp: Displacement"), div("hp: Horsepower"),
+  "</details"
+)
+
+mtcars %>%
+  head() %>%
+  select(mpg:hp) %>% 
+  gt() %>% 
+  tab_source_note(source_note = html(source_details))
+```
+
+## Agregar gráficos
+
+Antes, en @sec-part, vimos cómo incluir un *sparkline* a una tabla, ahora, agregaremos cualquier gráfico que sea creado con el paquete *ggplot2*. Cambiamos un poco de ejemplo, utilizamos los datos *"penguins"* disponibles en el paquete *palmerpenguins*, haremos una tabla para mostrar diferentes características de los pesos de los pinguinos según su especie, dentro de las características incluiremos un gráfico de violín.
+
+``` {r}
+#| warning: false
+
+suppressMessages(library(palmerpenguins))
+suppressMessages(library(ggplot2))
+suppressMessages(library(purrr))
+
+# Cargamos los datos
+filtered_penguins <- palmerpenguins::penguins |>
+    filter(!is.na(sex))
+
+# Agrupamos por especie
+penguin_weights <- filtered_penguins |>
+  group_by(species) |>
+  summarise(
+    Min = min(body_mass_g),
+    Mean = mean(body_mass_g) |> round(digits = 2),
+    Max = max(body_mass_g)
+  ) |>
+  mutate(species = as.character(species)) |>
+  rename(Species = species)
+
+# Función para realizar los gráficos de violín
+plot_density_species <- function(my_species) {
+  full_range <- filtered_penguins |>
+  pull(body_mass_g) |>
+  range()
+    filtered_penguins |>
+    filter(species == my_species) |>
+    ggplot(aes(x = body_mass_g, y = species)) +
+    geom_violin(fill = 'dodgerblue4') +
+    theme_minimal() +
+    scale_y_discrete(breaks = NULL) +
+    scale_x_continuous(breaks = NULL) +
+    labs(x = element_blank(), y = element_blank()) +
+    coord_cartesian(xlim = full_range)
+}
+
+# Tabla con gt
+penguin_weights |>
+  mutate(Distribution = Species) |> 
+  gt() |>
+  tab_spanner(
+    label = 'Penguin\'s Weight',
+    columns = -Species
+  ) |>
+  text_transform(
+    locations = cells_body(columns = 'Distribution'),
+    fn = function(column) {
+      map(column, plot_density_species) |>
+        ggplot_image(height = px(50), aspect_ratio = 3)
+    }
+  ) 
+```
+
+Puedes consultar otro tipo de gráficos [aquí](https://ggplot2.tidyverse.org/) para agregarlos a tu tabla.
+
+## Agregar imágenes
+
+Y como cereza del pastel, terminaremos este capítulo agregando imágenes. Inicialmente. crearemos un objeto  *tribble* con el nombre y la fotografía de cuatro escritores colombianos muy famosos. Para incluir estas imagenes, basta con ustilizar la función `gt_img_rows` del paquete *gtExtras*.
+
+``` {r}
+#| warning: false
+
+suppressMessages(library(gtExtras))
+
+pm_data <- tribble(
+  ~Escritor, ~Foto,
+  'Gabriel García', 'https://upload.wikimedia.org/wikipedia/commons/0/0f/Gabriel_Garcia_Marquez.jpg',
+  'Candelario Obeso', 'https://canaltrece.com.co/uploads/ck-uploads/2018/05/21/CANDELARIO%20OBESO%20.JPG',
+  'Rafael Pombo', 'https://urosario.edu.co/sites/default/files/2023-03/Rafael-Pombo_1.jpg',
+  'Jorge Isaacs', 'https://editorialverbum.es/wp-content/uploads/2020/07/retrato_Isaacs_Jorge.jpg'
+)
+
+pm_data |>
+  gt() |>
+  gt_img_rows(columns = 'Foto', height = 100)
+```
+
+Puedes personalizar aún más la visualización de las imágenes, puedes usar la función `gt_img_circle`, también de *gtExtras*, para que las fotografías queden redondeadas.
+
+
+``` {r}
+#| warning: false
+pm_data |>
+  gt() |>
+  gt_img_circle(column = 'Foto', height = 100, border_weight = 1) |>
+  cols_width(Foto ~ px(110)) # 110 = 100 (height) + 10 (padding around imgs)
+```

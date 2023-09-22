@@ -76,7 +76,7 @@ gt_tbl1
 
 Es posible personalizar aún más el estilo de la tabla y agregarle muchas más cosas usando las funciones de referencia (@sec-funcref).
 
-## Referencias y notas al pie de página (*Table footer*)
+## Referencias y notas al pie de página (*Table footer*) {#sec-footer}
 
 Ahora le vamos a incluir referencias y algunas notas en ciertas columnas, para eso usaremos la función `tab_source_note`
 

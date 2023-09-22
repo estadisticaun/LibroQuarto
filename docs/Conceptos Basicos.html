@@ -176,6 +176,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./Funciones Referencia.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Funciones de referencia</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gt avanzado.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funciones de <em>gt</em> avanzadas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./Referencias.html" class="sidebar-item-text sidebar-link">Referencias</a>
   </div>
 </li>
@@ -209,21 +219,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Usando la base de datos de R llamada islands, que es un vector (que contiene el área en miles de millas cuadradas de masas terrestres de más de 10.000 millas cuadaradas), crearemos un objeto <em>tibble</em> utilizando el paquete <em>dplyr</em>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar libreria</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(dplyr))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las 10 masas terrestres más grandes en el mundo</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>islands_tbl <span class="ot">&lt;-</span> </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="fu">names</span>(islands),</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> islands</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(size)) <span class="sc">|&gt;</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Cambiamos a español los nombres de las columnas</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(islands_tbl)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Nombre"</span>,<span class="st">"Tamaño"</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>islands_tbl</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(dplyr))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las 10 masas terrestres más grandes en el mundo</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>islands_tbl <span class="ot">&lt;-</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="fu">names</span>(islands),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> islands</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(size)) <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Cambiamos a español los nombres de las columnas</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(islands_tbl)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Nombre"</span>,<span class="st">"Tamaño"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>islands_tbl</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 2
    Nombre        Tamaño
@@ -242,32 +254,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Dado que <code>islands_tbl</code> es un <em>tibble</em>, ahora tenemos una entrada adecuada para <em>gt</em>. Si pasamos <code>islands_tbl</code> a la función <em>gt()</em>, obtendremos una tabla <em>gt</em> como resultado. Por cierto, también podríamos haber utilizado un data frame en su lugar como datos de tabla válidos para <em>gt</em>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installar libreria</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(gt))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installar libreria</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(gt))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'gt' was built under R version 4.2.3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear tabla</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>(gt_tbl <span class="ot">&lt;-</span> <span class="fu">gt</span>(islands_tbl))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear tabla</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(gt_tbl <span class="ot">&lt;-</span> <span class="fu">gt</span>(islands_tbl))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div id="ocsqopxfkk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ocsqopxfkk table {
+<div id="yodqaoyvuu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yodqaoyvuu table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ocsqopxfkk thead, #ocsqopxfkk tbody, #ocsqopxfkk tfoot, #ocsqopxfkk tr, #ocsqopxfkk td, #ocsqopxfkk th {
+#yodqaoyvuu thead, #yodqaoyvuu tbody, #yodqaoyvuu tfoot, #yodqaoyvuu tr, #yodqaoyvuu td, #yodqaoyvuu th {
   border-style: none;
 }
 
-#ocsqopxfkk p {
+#yodqaoyvuu p {
   margin: 0;
   padding: 0;
 }
 
-#ocsqopxfkk .gt_table {
+#yodqaoyvuu .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -293,12 +305,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-left-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_caption {
+#yodqaoyvuu .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ocsqopxfkk .gt_title {
+#yodqaoyvuu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -310,7 +322,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-width: 0;
 }
 
-#ocsqopxfkk .gt_subtitle {
+#yodqaoyvuu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -322,7 +334,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-width: 0;
 }
 
-#ocsqopxfkk .gt_heading {
+#yodqaoyvuu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -334,13 +346,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_bottom_border {
+#yodqaoyvuu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_col_headings {
+#yodqaoyvuu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -355,7 +367,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_col_heading {
+#yodqaoyvuu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -375,7 +387,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#ocsqopxfkk .gt_column_spanner_outer {
+#yodqaoyvuu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -387,15 +399,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 4px;
 }
 
-#ocsqopxfkk .gt_column_spanner_outer:first-child {
+#yodqaoyvuu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ocsqopxfkk .gt_column_spanner_outer:last-child {
+#yodqaoyvuu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ocsqopxfkk .gt_column_spanner {
+#yodqaoyvuu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -407,11 +419,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   width: 100%;
 }
 
-#ocsqopxfkk .gt_spanner_row {
+#yodqaoyvuu .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ocsqopxfkk .gt_group_heading {
+#yodqaoyvuu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -437,7 +449,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   text-align: left;
 }
 
-#ocsqopxfkk .gt_empty_group_heading {
+#yodqaoyvuu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -452,15 +464,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: middle;
 }
 
-#ocsqopxfkk .gt_from_md > :first-child {
+#yodqaoyvuu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ocsqopxfkk .gt_from_md > :last-child {
+#yodqaoyvuu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ocsqopxfkk .gt_row {
+#yodqaoyvuu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -479,7 +491,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   overflow-x: hidden;
 }
 
-#ocsqopxfkk .gt_stub {
+#yodqaoyvuu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -492,7 +504,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#ocsqopxfkk .gt_stub_row_group {
+#yodqaoyvuu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -506,15 +518,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   vertical-align: top;
 }
 
-#ocsqopxfkk .gt_row_group_first td {
+#yodqaoyvuu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ocsqopxfkk .gt_row_group_first th {
+#yodqaoyvuu .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ocsqopxfkk .gt_summary_row {
+#yodqaoyvuu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -524,16 +536,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#ocsqopxfkk .gt_first_summary_row {
+#yodqaoyvuu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_first_summary_row.thick {
+#yodqaoyvuu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ocsqopxfkk .gt_last_summary_row {
+#yodqaoyvuu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -543,7 +555,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_grand_summary_row {
+#yodqaoyvuu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -553,7 +565,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#ocsqopxfkk .gt_first_grand_summary_row {
+#yodqaoyvuu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -563,7 +575,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-top-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_last_grand_summary_row_top {
+#yodqaoyvuu .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -573,11 +585,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_striped {
+#yodqaoyvuu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ocsqopxfkk .gt_table_body {
+#yodqaoyvuu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -586,7 +598,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-bottom-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_footnotes {
+#yodqaoyvuu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -600,7 +612,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_footnote {
+#yodqaoyvuu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -609,7 +621,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#ocsqopxfkk .gt_sourcenotes {
+#yodqaoyvuu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -623,7 +635,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   border-right-color: #D3D3D3;
 }
 
-#ocsqopxfkk .gt_sourcenote {
+#yodqaoyvuu .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -631,63 +643,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   padding-right: 5px;
 }
 
-#ocsqopxfkk .gt_left {
+#yodqaoyvuu .gt_left {
   text-align: left;
 }
 
-#ocsqopxfkk .gt_center {
+#yodqaoyvuu .gt_center {
   text-align: center;
 }
 
-#ocsqopxfkk .gt_right {
+#yodqaoyvuu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ocsqopxfkk .gt_font_normal {
+#yodqaoyvuu .gt_font_normal {
   font-weight: normal;
 }
 
-#ocsqopxfkk .gt_font_bold {
+#yodqaoyvuu .gt_font_bold {
   font-weight: bold;
 }
 
-#ocsqopxfkk .gt_font_italic {
+#yodqaoyvuu .gt_font_italic {
   font-style: italic;
 }
 
-#ocsqopxfkk .gt_super {
+#yodqaoyvuu .gt_super {
   font-size: 65%;
 }
 
-#ocsqopxfkk .gt_footnote_marks {
+#yodqaoyvuu .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ocsqopxfkk .gt_asterisk {
+#yodqaoyvuu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ocsqopxfkk .gt_indent_1 {
+#yodqaoyvuu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ocsqopxfkk .gt_indent_2 {
+#yodqaoyvuu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ocsqopxfkk .gt_indent_3 {
+#yodqaoyvuu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ocsqopxfkk .gt_indent_4 {
+#yodqaoyvuu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ocsqopxfkk .gt_indent_5 {
+#yodqaoyvuu .gt_indent_5 {
   text-indent: 25px;
 }
 </style>

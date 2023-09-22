@@ -21,7 +21,6 @@ names(islands_tbl)<-c("Nombre","Tamaño")
 islands_tbl
 ```
 
-
 Dado que `islands_tbl` es un *tibble*, ahora tenemos una entrada adecuada para *gt*. Si pasamos `islands_tbl` a la función *gt()*, obtendremos una tabla *gt* como resultado. Por cierto, también podríamos haber utilizado un data frame en su lugar como datos de tabla válidos para *gt*.
 
 ```{r}
@@ -31,6 +30,5 @@ suppressMessages(library(gt))
 # Crear tabla
 (gt_tbl <- gt(islands_tbl))
 ```
-
 
 Es una tabla básica, pero se le pueden agregar títulos, subtítulos, grupos, subgrupos, y más, según los datos que tengamos y la especificación que le demos a la tabla, como veremos más adelante en @sec-partes.
