@@ -3,6 +3,7 @@
 Usando la base de datos de R llamada islands, que es un vector (que contiene el área en miles de millas cuadradas de masas terrestres de más de 10.000 millas cuadaradas), crearemos un objeto *tibble* utilizando el paquete *dplyr*.
 
 ```{r}
+#| warning: false
 # Cargar libreria
 suppressMessages(library(dplyr))
 
@@ -24,6 +25,7 @@ islands_tbl
 Dado que `islands_tbl` es un *tibble*, ahora tenemos una entrada adecuada para *gt*. Si pasamos `islands_tbl` a la función *gt()*, obtendremos una tabla *gt* como resultado. Por cierto, también podríamos haber utilizado un data frame en su lugar como datos de tabla válidos para *gt*.
 
 ```{r}
+#| warning: false
 # Installar libreria
 suppressMessages(library(gt))
 
