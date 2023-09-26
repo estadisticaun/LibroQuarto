@@ -4,7 +4,7 @@
 
 El paquete **gt** se enfoca en simplificar la creación de tablas de visualización con un aspecto atractivo. Es importante distinguir entre las tablas de datos (por ejemplo, tibbles, data.frames, etc.) y aquellas tablas que encontrarías en una página web, un artículo de revista o en una revista en sí. Estas tablas también pueden ser llamadas tablas de presentación, tablas resumen o simplemente tablas en realidad.
 
-![GT Table](Imagenes/Gt table/1. Intro.jpg){#fig-GtTable fig-alt="GT Table" fig-align="center" width="80%"}
+![GT Table](Imagenes/Gt%20table/1.%20Intro.jpg){#fig-GtTable fig-alt="GT Table" fig-align="center" width="80%"}
 
 Podemos considerar las tablas de visualización como elementos de salida solamente, donde no queremos utilizarlas nuevamente como entrada. Otras características incluyen anotaciones, estilos de elementos de tabla y transformaciones de texto que ayudan a comunicar de manera más clara el tema en cuestión.
 

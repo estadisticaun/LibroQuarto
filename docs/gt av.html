@@ -1,0 +1,3150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Crear tablas de resumen en R - 4&nbsp; Funciones de gt avanzadas</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Referencias.html" rel="next">
+<link href="./Funciones Referencia.html" rel="prev">
+<link href="./Imagenes/Logos/Escudo_UNAL.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funciones de <em>gt</em> avanzadas</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Crear tablas de resumen en R</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Usando <code>gt Table</code></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Conceptos Basicos.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Conceptos Básicos</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Agregar Partes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Agregar partes a una tabla simple</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Funciones Referencia.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Funciones de referencia</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gt av.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funciones de <em>gt</em> avanzadas</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Referencias.html" class="sidebar-item-text sidebar-link">Referencias</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#personalización-con-css" id="toc-personalización-con-css" class="nav-link active" data-scroll-target="#personalización-con-css"><span class="toc-section-number">4.1</span>  Personalización con CSS</a></li>
+  <li><a href="#insertar-urls" id="toc-insertar-urls" class="nav-link" data-scroll-target="#insertar-urls"><span class="toc-section-number">4.2</span>  Insertar URLs</a></li>
+  <li><a href="#sec-original" id="toc-sec-original" class="nav-link" data-scroll-target="#sec-original"><span class="toc-section-number">4.3</span>  Opción para descargar los datos</a></li>
+  <li><a href="#agregar-gráficos" id="toc-agregar-gráficos" class="nav-link" data-scroll-target="#agregar-gráficos"><span class="toc-section-number">4.4</span>  Agregar gráficos</a></li>
+  <li><a href="#agregar-tooltips" id="toc-agregar-tooltips" class="nav-link" data-scroll-target="#agregar-tooltips"><span class="toc-section-number">4.5</span>  Agregar <em>tooltips</em></a></li>
+  <li><a href="#agregar-iconos" id="toc-agregar-iconos" class="nav-link" data-scroll-target="#agregar-iconos"><span class="toc-section-number">4.6</span>  Agregar iconos</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-funavan" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Funciones de <em>gt</em> avanzadas</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>En este capítulo veremos algunas otras funciones “más avanzadas” de <em>gt</em>. Para utilizar dichas funciones es necesario tener algunos conocimiento de HTML, CSS, entre otros.</p>
+<section id="personalización-con-css" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="personalización-con-css"><span class="header-section-number">4.1</span> Personalización con CSS</h2>
+<p>El paquete <em>gt</em> tiene la función <code>opt_css</code> que nos permite personalizar la tabla aplicando nuestro propio CSS. Para visualizar esto, vamos a crear una tabla usando la base de datos <em>exibble</em> disponible en R, modificaremos el color de fondo de la tabla (<code>one .gt_table {background-color:}</code>), el espacio de cada para fila de la gráfica (<code>#one .gt_row {padding:}</code>), haremos que los títulos de las columnas se vean centrados (<code>#one .gt_col_heading {text-align:}</code>) y también que cambie el color de fondo de una fila cuando pongamos el mouse sobre ella (<code>#one tr:hover {background-color:}</code>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(gt))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(dplyr))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>exibble <span class="sc">%&gt;%</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(num, currency) <span class="sc">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">id =</span> <span class="st">"one"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_currency</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">vars</span>(currency),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">currency =</span> <span class="st">"HKD"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_scientific</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">vars</span>(num)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_css</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">css =</span> <span class="st">"</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="st">    #one .gt_table { </span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="st">      background-color: skyblue;</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="st">    #one .gt_row {</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="st">      padding: 20px 30px;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="st">    #one tr:hover {</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="st">    background-color: #f5f8ff;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="st">    #one .gt_col_heading {</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="st">      text-align: center !important;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="st">    "</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="one" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#one table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#one thead, #one tbody, #one tfoot, #one tr, #one td, #one th {
+  border-style: none;
+}
+
+#one p {
+  margin: 0;
+  padding: 0;
+}
+
+#one .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#one .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#one .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#one .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#one .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#one .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#one .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#one .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#one .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#one .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#one .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#one .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#one .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#one .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#one .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#one .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#one .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#one .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#one .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#one .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#one .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#one .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#one .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#one .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#one .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#one .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#one .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#one .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#one .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#one .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#one .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#one .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#one .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#one .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#one .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#one .gt_left {
+  text-align: left;
+}
+
+#one .gt_center {
+  text-align: center;
+}
+
+#one .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#one .gt_font_normal {
+  font-weight: normal;
+}
+
+#one .gt_font_bold {
+  font-weight: bold;
+}
+
+#one .gt_font_italic {
+  font-style: italic;
+}
+
+#one .gt_super {
+  font-size: 65%;
+}
+
+#one .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#one .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#one .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#one .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#one .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#one .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#one .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#one .gt_table {
+  background-color: skyblue;
+}
+
+#one .gt_row {
+  padding: 20px 30px;
+}
+
+#one tr:hover {
+  background-color: #f5f8ff;
+}
+
+#one .gt_col_heading {
+  text-align: center !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="num">num</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="currency">currency</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="num" class="gt_row gt_right">1.11 × 10<sup style="font-size: 65%;">−1</sup></td>
+<td headers="currency" class="gt_row gt_right">HK$49.95</td></tr>
+    <tr><td headers="num" class="gt_row gt_right">2.22</td>
+<td headers="currency" class="gt_row gt_right">HK$17.95</td></tr>
+    <tr><td headers="num" class="gt_row gt_right">3.33 × 10<sup style="font-size: 65%;">1</sup></td>
+<td headers="currency" class="gt_row gt_right">HK$1.39</td></tr>
+    <tr><td headers="num" class="gt_row gt_right">4.44 × 10<sup style="font-size: 65%;">2</sup></td>
+<td headers="currency" class="gt_row gt_right">HK$65,100.00</td></tr>
+    <tr><td headers="num" class="gt_row gt_right">5.55 × 10<sup style="font-size: 65%;">3</sup></td>
+<td headers="currency" class="gt_row gt_right">HK$1,325.81</td></tr>
+    <tr><td headers="num" class="gt_row gt_right">NA</td>
+<td headers="currency" class="gt_row gt_right">HK$13.26</td></tr>
+    <tr><td headers="num" class="gt_row gt_right">7.77 × 10<sup style="font-size: 65%;">5</sup></td>
+<td headers="currency" class="gt_row gt_right">NA</td></tr>
+    <tr><td headers="num" class="gt_row gt_right">8.88 × 10<sup style="font-size: 65%;">6</sup></td>
+<td headers="currency" class="gt_row gt_right">HK$0.44</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>¡Quedó preciosa nuestra tabla! Puedes encontrar más opciones de CSS <a href="https://www.w3schools.com/css/css_table_style.asp">aquí</a>.</p>
+</section>
+<section id="insertar-urls" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="insertar-urls"><span class="header-section-number">4.2</span> Insertar URLs</h2>
+<p>Utilizando lenguaje HTML podemos agregar URLs en nuestra tabla. Para ilustrarlo, vamos a crear una una tabla con tres sitios web y sus respectivas direcciones.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(<span class="fu">library</span>(htmltools))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Primero creamos la base de datos con los sitios y las direcciones</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ex_sites <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  Dirección <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"https://gmail.com"</span>, <span class="st">"https://youtube.com"</span>, <span class="st">"https://es.duolingo.com/"</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Sitio =</span> <span class="fu">c</span>(<span class="st">"Gmail"</span>, <span class="st">"YouTube"</span>, <span class="st">"Duolingo"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ahora si creamos la tabla</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(ex_sites) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text_transform</span>(</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> <span class="fu">vars</span>(Dirección)), <span class="co"># Comenzamos editando la columna con las direcciones</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fn =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="co"># la función map de purrr aplica una operación a cada elemento de x</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    purrr<span class="sc">::</span><span class="fu">map</span>(x,  <span class="sc">~</span>htmltools<span class="sc">::</span>tags<span class="sc">$</span><span class="fu">a</span>(<span class="at">href =</span> .x, <span class="at">target =</span> <span class="st">"_blank"</span>, .x))</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="co"># EXPLICAR ESTO</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text_transform</span>(</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> <span class="fu">vars</span>(Sitio)),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">fn =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    purrr<span class="sc">::</span><span class="fu">map2</span>(</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">.x =</span> x, <span class="at">.y =</span> ex_sites<span class="sc">$</span>Dirección, </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">.f =</span> <span class="sc">~</span>glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">'&lt;a href="{.y}" target="_blank"&gt;{.x}&lt;/a&gt;'</span>))</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="brdzdscfqu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#brdzdscfqu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#brdzdscfqu thead, #brdzdscfqu tbody, #brdzdscfqu tfoot, #brdzdscfqu tr, #brdzdscfqu td, #brdzdscfqu th {
+  border-style: none;
+}
+
+#brdzdscfqu p {
+  margin: 0;
+  padding: 0;
+}
+
+#brdzdscfqu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#brdzdscfqu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#brdzdscfqu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#brdzdscfqu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#brdzdscfqu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#brdzdscfqu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#brdzdscfqu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#brdzdscfqu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#brdzdscfqu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#brdzdscfqu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#brdzdscfqu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#brdzdscfqu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#brdzdscfqu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#brdzdscfqu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#brdzdscfqu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#brdzdscfqu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#brdzdscfqu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#brdzdscfqu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#brdzdscfqu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#brdzdscfqu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#brdzdscfqu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#brdzdscfqu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#brdzdscfqu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#brdzdscfqu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#brdzdscfqu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#brdzdscfqu .gt_left {
+  text-align: left;
+}
+
+#brdzdscfqu .gt_center {
+  text-align: center;
+}
+
+#brdzdscfqu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#brdzdscfqu .gt_font_normal {
+  font-weight: normal;
+}
+
+#brdzdscfqu .gt_font_bold {
+  font-weight: bold;
+}
+
+#brdzdscfqu .gt_font_italic {
+  font-style: italic;
+}
+
+#brdzdscfqu .gt_super {
+  font-size: 65%;
+}
+
+#brdzdscfqu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#brdzdscfqu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#brdzdscfqu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#brdzdscfqu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#brdzdscfqu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#brdzdscfqu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#brdzdscfqu .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Dirección">Dirección</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Sitio">Sitio</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Dirección" class="gt_row gt_left"><a href="https://gmail.com" target="_blank">https://gmail.com</a></td>
+<td headers="Sitio" class="gt_row gt_left"><a href="https://gmail.com" target="_blank">Gmail</a></td></tr>
+    <tr><td headers="Dirección" class="gt_row gt_left"><a href="https://youtube.com" target="_blank">https://youtube.com</a></td>
+<td headers="Sitio" class="gt_row gt_left"><a href="https://youtube.com" target="_blank">YouTube</a></td></tr>
+    <tr><td headers="Dirección" class="gt_row gt_left"><a href="https://es.duolingo.com/" target="_blank">https://es.duolingo.com/</a></td>
+<td headers="Sitio" class="gt_row gt_left"><a href="https://es.duolingo.com/" target="_blank">Duolingo</a></td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-original" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-original"><span class="header-section-number">4.3</span> Opción para descargar los datos</h2>
+<p>Podemos agregar opciones para que quien vea nuestra tabla tenga la opción de descargar los datos, esto es posible usando funciones de HTML y agregando una nota al pie de página con la función <code>tab_source_note()</code> de <em>gt</em>. Para ilustrarlo, vamos a presentar en una tabla los datos de <em>mtcars</em> dsiponibles en R; inicialmente crearemos un archivo .csv con la función <code>write.csv2</code>, luego usamos lenguaje HTML para crear un hipervínculo que descarge el archivo .csv, y finalmente agregamos dicho link como una nota al pie de página en la tabla.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv2</span>(mtcars, <span class="st">"./file.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>encoded <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="st">"./file.csv"</span>) <span class="sc">%&gt;%</span> <span class="co"># EXPLICAR ESTO</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="at">collapse=</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  openssl<span class="sc">::</span><span class="fu">base64_encode</span>() <span class="ot">-&gt;</span> encoded</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>html_encode <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">'data:text/csv;base64,%s'</span>, encoded)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>html_csv <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"&lt;a download='mtcars.csv' href='{html_encode}'&gt;CSV Download&lt;/a&gt;"</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(<span class="fu">html</span>(html_csv))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="akdlbfbpcv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#akdlbfbpcv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#akdlbfbpcv thead, #akdlbfbpcv tbody, #akdlbfbpcv tfoot, #akdlbfbpcv tr, #akdlbfbpcv td, #akdlbfbpcv th {
+  border-style: none;
+}
+
+#akdlbfbpcv p {
+  margin: 0;
+  padding: 0;
+}
+
+#akdlbfbpcv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#akdlbfbpcv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#akdlbfbpcv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#akdlbfbpcv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#akdlbfbpcv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#akdlbfbpcv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#akdlbfbpcv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#akdlbfbpcv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#akdlbfbpcv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#akdlbfbpcv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#akdlbfbpcv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#akdlbfbpcv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#akdlbfbpcv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#akdlbfbpcv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#akdlbfbpcv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#akdlbfbpcv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#akdlbfbpcv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#akdlbfbpcv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#akdlbfbpcv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#akdlbfbpcv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#akdlbfbpcv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#akdlbfbpcv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#akdlbfbpcv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#akdlbfbpcv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#akdlbfbpcv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#akdlbfbpcv .gt_left {
+  text-align: left;
+}
+
+#akdlbfbpcv .gt_center {
+  text-align: center;
+}
+
+#akdlbfbpcv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#akdlbfbpcv .gt_font_normal {
+  font-weight: normal;
+}
+
+#akdlbfbpcv .gt_font_bold {
+  font-weight: bold;
+}
+
+#akdlbfbpcv .gt_font_italic {
+  font-style: italic;
+}
+
+#akdlbfbpcv .gt_super {
+  font-size: 65%;
+}
+
+#akdlbfbpcv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#akdlbfbpcv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#akdlbfbpcv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#akdlbfbpcv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#akdlbfbpcv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#akdlbfbpcv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#akdlbfbpcv .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mpg">mpg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="cyl">cyl</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="disp">disp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="hp">hp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="drat">drat</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="wt">wt</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="qsec">qsec</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="vs">vs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="am">am</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="gear">gear</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="carb">carb</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.620</td>
+<td headers="qsec" class="gt_row gt_right">16.46</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.875</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">22.8</td>
+<td headers="cyl" class="gt_row gt_right">4</td>
+<td headers="disp" class="gt_row gt_right">108</td>
+<td headers="hp" class="gt_row gt_right">93</td>
+<td headers="drat" class="gt_row gt_right">3.85</td>
+<td headers="wt" class="gt_row gt_right">2.320</td>
+<td headers="qsec" class="gt_row gt_right">18.61</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.4</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">258</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.08</td>
+<td headers="wt" class="gt_row gt_right">3.215</td>
+<td headers="qsec" class="gt_row gt_right">19.44</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.7</td>
+<td headers="cyl" class="gt_row gt_right">8</td>
+<td headers="disp" class="gt_row gt_right">360</td>
+<td headers="hp" class="gt_row gt_right">175</td>
+<td headers="drat" class="gt_row gt_right">3.15</td>
+<td headers="wt" class="gt_row gt_right">3.440</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.1</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">225</td>
+<td headers="hp" class="gt_row gt_right">105</td>
+<td headers="drat" class="gt_row gt_right">2.76</td>
+<td headers="wt" class="gt_row gt_right">3.460</td>
+<td headers="qsec" class="gt_row gt_right">20.22</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="11"><a download="mtcars.csv" href="data:text/csv;base64,IiI7Im1wZyI7ImN5bCI7ImRpc3AiOyJocCI7ImRyYXQiOyJ3dCI7InFzZWMiOyJ2cyI7ImFtIjsiZ2VhciI7ImNhcmIiCiJNYXpkYSBSWDQiOzIxOzY7MTYwOzExMDszLDk7Miw2MjsxNiw0NjswOzE7NDs0CiJNYXpkYSBSWDQgV2FnIjsyMTs2OzE2MDsxMTA7Myw5OzIsODc1OzE3LDAyOzA7MTs0OzQKIkRhdHN1biA3MTAiOzIyLDg7NDsxMDg7OTM7Myw4NTsyLDMyOzE4LDYxOzE7MTs0OzEKIkhvcm5ldCA0IERyaXZlIjsyMSw0OzY7MjU4OzExMDszLDA4OzMsMjE1OzE5LDQ0OzE7MDszOzEKIkhvcm5ldCBTcG9ydGFib3V0IjsxOCw3Ozg7MzYwOzE3NTszLDE1OzMsNDQ7MTcsMDI7MDswOzM7MgoiVmFsaWFudCI7MTgsMTs2OzIyNTsxMDU7Miw3NjszLDQ2OzIwLDIyOzE7MDszOzEKIkR1c3RlciAzNjAiOzE0LDM7ODszNjA7MjQ1OzMsMjE7Myw1NzsxNSw4NDswOzA7Mzs0CiJNZXJjIDI0MEQiOzI0LDQ7NDsxNDYsNzs2MjszLDY5OzMsMTk7MjA7MTswOzQ7MgoiTWVyYyAyMzAiOzIyLDg7NDsxNDAsODs5NTszLDkyOzMsMTU7MjIsOTsxOzA7NDsyCiJNZXJjIDI4MCI7MTksMjs2OzE2Nyw2OzEyMzszLDkyOzMsNDQ7MTgsMzsxOzA7NDs0CiJNZXJjIDI4MEMiOzE3LDg7NjsxNjcsNjsxMjM7Myw5MjszLDQ0OzE4LDk7MTswOzQ7NAoiTWVyYyA0NTBTRSI7MTYsNDs4OzI3NSw4OzE4MDszLDA3OzQsMDc7MTcsNDswOzA7MzszCiJNZXJjIDQ1MFNMIjsxNywzOzg7Mjc1LDg7MTgwOzMsMDc7Myw3MzsxNyw2OzA7MDszOzMKIk1lcmMgNDUwU0xDIjsxNSwyOzg7Mjc1LDg7MTgwOzMsMDc7Myw3ODsxODswOzA7MzszCiJDYWRpbGxhYyBGbGVldHdvb2QiOzEwLDQ7ODs0NzI7MjA1OzIsOTM7NSwyNTsxNyw5ODswOzA7Mzs0CiJMaW5jb2xuIENvbnRpbmVudGFsIjsxMCw0Ozg7NDYwOzIxNTszOzUsNDI0OzE3LDgyOzA7MDszOzQKIkNocnlzbGVyIEltcGVyaWFsIjsxNCw3Ozg7NDQwOzIzMDszLDIzOzUsMzQ1OzE3LDQyOzA7MDszOzQKIkZpYXQgMTI4IjszMiw0OzQ7NzgsNzs2Njs0LDA4OzIsMjsxOSw0NzsxOzE7NDsxCiJIb25kYSBDaXZpYyI7MzAsNDs0Ozc1LDc7NTI7NCw5MzsxLDYxNTsxOCw1MjsxOzE7NDsyCiJUb3lvdGEgQ29yb2xsYSI7MzMsOTs0OzcxLDE7NjU7NCwyMjsxLDgzNTsxOSw5OzE7MTs0OzEKIlRveW90YSBDb3JvbmEiOzIxLDU7NDsxMjAsMTs5NzszLDc7Miw0NjU7MjAsMDE7MTswOzM7MQoiRG9kZ2UgQ2hhbGxlbmdlciI7MTUsNTs4OzMxODsxNTA7Miw3NjszLDUyOzE2LDg3OzA7MDszOzIKIkFNQyBKYXZlbGluIjsxNSwyOzg7MzA0OzE1MDszLDE1OzMsNDM1OzE3LDM7MDswOzM7MgoiQ2FtYXJvIFoyOCI7MTMsMzs4OzM1MDsyNDU7Myw3MzszLDg0OzE1LDQxOzA7MDszOzQKIlBvbnRpYWMgRmlyZWJpcmQiOzE5LDI7ODs0MDA7MTc1OzMsMDg7Myw4NDU7MTcsMDU7MDswOzM7MgoiRmlhdCBYMS05IjsyNywzOzQ7Nzk7NjY7NCwwODsxLDkzNTsxOCw5OzE7MTs0OzEKIlBvcnNjaGUgOTE0LTIiOzI2OzQ7MTIwLDM7OTE7NCw0MzsyLDE0OzE2LDc7MDsxOzU7MgoiTG90dXMgRXVyb3BhIjszMCw0OzQ7OTUsMTsxMTM7Myw3NzsxLDUxMzsxNiw5OzE7MTs1OzIKIkZvcmQgUGFudGVyYSBMIjsxNSw4Ozg7MzUxOzI2NDs0LDIyOzMsMTc7MTQsNTswOzE7NTs0CiJGZXJyYXJpIERpbm8iOzE5LDc7NjsxNDU7MTc1OzMsNjI7Miw3NzsxNSw1OzA7MTs1OzYKIk1hc2VyYXRpIEJvcmEiOzE1Ozg7MzAxOzMzNTszLDU0OzMsNTc7MTQsNjswOzE7NTs4CiJWb2x2byAxNDJFIjsyMSw0OzQ7MTIxOzEwOTs0LDExOzIsNzg7MTgsNjsxOzE7NDsy">CSV Download</a></td>
+    </tr>
+  </tfoot>
+  
+</table>
+</div>
+</div>
+</div>
+<p>También existe una manera más sencilla (sin utilizar lenguaje HTML) para agregar la opción de descargar los datos, solo necesitamos la librería <em>“downloadthis”</em>, veamos cómo, haciendo uso de nuestro ejemplo con <em>mtcars</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(downloadthis)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">download_this</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">output_name =</span> <span class="st">"mtcars"</span>, <span class="co"># Cómo se llamará el archivo una vez descargado </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">output_extension =</span> <span class="st">".csv"</span>, <span class="co"># El archivo es . csv, también puede ser .xlsx</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">button_label =</span> <span class="st">"Download csv"</span>, <span class="co"># Cómo se llamará el botón</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">button_type =</span> <span class="st">"default"</span>, <span class="co"># Tipo de botón, gtambién puede ser danger, warning, etc</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="plrtcuvrsc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#plrtcuvrsc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#plrtcuvrsc thead, #plrtcuvrsc tbody, #plrtcuvrsc tfoot, #plrtcuvrsc tr, #plrtcuvrsc td, #plrtcuvrsc th {
+  border-style: none;
+}
+
+#plrtcuvrsc p {
+  margin: 0;
+  padding: 0;
+}
+
+#plrtcuvrsc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#plrtcuvrsc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#plrtcuvrsc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#plrtcuvrsc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#plrtcuvrsc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#plrtcuvrsc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#plrtcuvrsc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#plrtcuvrsc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#plrtcuvrsc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#plrtcuvrsc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#plrtcuvrsc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#plrtcuvrsc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#plrtcuvrsc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#plrtcuvrsc .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#plrtcuvrsc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plrtcuvrsc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#plrtcuvrsc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#plrtcuvrsc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#plrtcuvrsc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plrtcuvrsc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#plrtcuvrsc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plrtcuvrsc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#plrtcuvrsc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plrtcuvrsc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#plrtcuvrsc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plrtcuvrsc .gt_left {
+  text-align: left;
+}
+
+#plrtcuvrsc .gt_center {
+  text-align: center;
+}
+
+#plrtcuvrsc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#plrtcuvrsc .gt_font_normal {
+  font-weight: normal;
+}
+
+#plrtcuvrsc .gt_font_bold {
+  font-weight: bold;
+}
+
+#plrtcuvrsc .gt_font_italic {
+  font-style: italic;
+}
+
+#plrtcuvrsc .gt_super {
+  font-size: 65%;
+}
+
+#plrtcuvrsc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#plrtcuvrsc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#plrtcuvrsc .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#plrtcuvrsc .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#plrtcuvrsc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#plrtcuvrsc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#plrtcuvrsc .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mpg">mpg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="cyl">cyl</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="disp">disp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="hp">hp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="drat">drat</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="wt">wt</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="qsec">qsec</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="vs">vs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="am">am</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="gear">gear</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="carb">carb</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.620</td>
+<td headers="qsec" class="gt_row gt_right">16.46</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.875</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">22.8</td>
+<td headers="cyl" class="gt_row gt_right">4</td>
+<td headers="disp" class="gt_row gt_right">108</td>
+<td headers="hp" class="gt_row gt_right">93</td>
+<td headers="drat" class="gt_row gt_right">3.85</td>
+<td headers="wt" class="gt_row gt_right">2.320</td>
+<td headers="qsec" class="gt_row gt_right">18.61</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.4</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">258</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.08</td>
+<td headers="wt" class="gt_row gt_right">3.215</td>
+<td headers="qsec" class="gt_row gt_right">19.44</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.7</td>
+<td headers="cyl" class="gt_row gt_right">8</td>
+<td headers="disp" class="gt_row gt_right">360</td>
+<td headers="hp" class="gt_row gt_right">175</td>
+<td headers="drat" class="gt_row gt_right">3.15</td>
+<td headers="wt" class="gt_row gt_right">3.440</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.1</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">225</td>
+<td headers="hp" class="gt_row gt_right">105</td>
+<td headers="drat" class="gt_row gt_right">2.76</td>
+<td headers="wt" class="gt_row gt_right">3.460</td>
+<td headers="qsec" class="gt_row gt_right">20.22</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="11"><a onclick="fetch('data:text/csv;base64,bXBnO2N5bDtkaXNwO2hwO2RyYXQ7d3Q7cXNlYzt2czthbTtnZWFyO2NhcmIKMjEsMDs2OzE2MCwwOzExMDszLDkwOzIsNjIwOzE2LDQ2OzA7MTs0OzQKMjEsMDs2OzE2MCwwOzExMDszLDkwOzIsODc1OzE3LDAyOzA7MTs0OzQKMjIsODs0OzEwOCwwOzkzOzMsODU7MiwzMjA7MTgsNjE7MTsxOzQ7MQoyMSw0OzY7MjU4LDA7MTEwOzMsMDg7MywyMTU7MTksNDQ7MTswOzM7MQoxOCw3Ozg7MzYwLDA7MTc1OzMsMTU7Myw0NDA7MTcsMDI7MDswOzM7MgoxOCwxOzY7MjI1LDA7MTA1OzIsNzY7Myw0NjA7MjAsMjI7MTswOzM7MQoxNCwzOzg7MzYwLDA7MjQ1OzMsMjE7Myw1NzA7MTUsODQ7MDswOzM7NAoyNCw0OzQ7MTQ2LDc7NjI7Myw2OTszLDE5MDsyMCwwMDsxOzA7NDsyCjIyLDg7NDsxNDAsODs5NTszLDkyOzMsMTUwOzIyLDkwOzE7MDs0OzIKMTksMjs2OzE2Nyw2OzEyMzszLDkyOzMsNDQwOzE4LDMwOzE7MDs0OzQKMTcsODs2OzE2Nyw2OzEyMzszLDkyOzMsNDQwOzE4LDkwOzE7MDs0OzQKMTYsNDs4OzI3NSw4OzE4MDszLDA3OzQsMDcwOzE3LDQwOzA7MDszOzMKMTcsMzs4OzI3NSw4OzE4MDszLDA3OzMsNzMwOzE3LDYwOzA7MDszOzMKMTUsMjs4OzI3NSw4OzE4MDszLDA3OzMsNzgwOzE4LDAwOzA7MDszOzMKMTAsNDs4OzQ3MiwwOzIwNTsyLDkzOzUsMjUwOzE3LDk4OzA7MDszOzQKMTAsNDs4OzQ2MCwwOzIxNTszLDAwOzUsNDI0OzE3LDgyOzA7MDszOzQKMTQsNzs4OzQ0MCwwOzIzMDszLDIzOzUsMzQ1OzE3LDQyOzA7MDszOzQKMzIsNDs0Ozc4LDc7NjY7NCwwODsyLDIwMDsxOSw0NzsxOzE7NDsxCjMwLDQ7NDs3NSw3OzUyOzQsOTM7MSw2MTU7MTgsNTI7MTsxOzQ7MgozMyw5OzQ7NzEsMTs2NTs0LDIyOzEsODM1OzE5LDkwOzE7MTs0OzEKMjEsNTs0OzEyMCwxOzk3OzMsNzA7Miw0NjU7MjAsMDE7MTswOzM7MQoxNSw1Ozg7MzE4LDA7MTUwOzIsNzY7Myw1MjA7MTYsODc7MDswOzM7MgoxNSwyOzg7MzA0LDA7MTUwOzMsMTU7Myw0MzU7MTcsMzA7MDswOzM7MgoxMywzOzg7MzUwLDA7MjQ1OzMsNzM7Myw4NDA7MTUsNDE7MDswOzM7NAoxOSwyOzg7NDAwLDA7MTc1OzMsMDg7Myw4NDU7MTcsMDU7MDswOzM7MgoyNywzOzQ7NzksMDs2Njs0LDA4OzEsOTM1OzE4LDkwOzE7MTs0OzEKMjYsMDs0OzEyMCwzOzkxOzQsNDM7MiwxNDA7MTYsNzA7MDsxOzU7MgozMCw0OzQ7OTUsMTsxMTM7Myw3NzsxLDUxMzsxNiw5MDsxOzE7NTsyCjE1LDg7ODszNTEsMDsyNjQ7NCwyMjszLDE3MDsxNCw1MDswOzE7NTs0CjE5LDc7NjsxNDUsMDsxNzU7Myw2MjsyLDc3MDsxNSw1MDswOzE7NTs2CjE1LDA7ODszMDEsMDszMzU7Myw1NDszLDU3MDsxNCw2MDswOzE7NTs4CjIxLDQ7NDsxMjEsMDsxMDk7NCwxMTsyLDc4MDsxOCw2MDsxOzE7NDsyCg==').then(res => res.blob()).then(blob => {
+      const downloadURL = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.href = downloadURL;
+      a.download = 'mtcars.csv'; a.click();
+      window.URL.revokeObjectURL(downloadURL);
+      document.body.removeChild(a);
+    });">
+  <button class="btn btn-default"><i class="fa fa-save"></i> Download csv</button>
+</a></td>
+    </tr>
+  </tfoot>
+  
+</table>
+</div>
+</div>
+</div>
+<p>Con la función <code>download_this</code> podemos personalizar más nuestro botón utilizando lenguaje CSS. Vamos a generar un botón que descargue un archivo .xlsx, de color rojo, letra de tipo “Serif” y borde color negro.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>attach_excel <span class="ot">&lt;-</span> mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download_this</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">output_name =</span> <span class="st">"mtcars"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">output_extension =</span> <span class="st">".xlsx"</span>, <span class="co"># Excel file type</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">button_label =</span> <span class="st">"Download Excel"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">class =</span> <span class="st">"buttonExcel"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars) <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_css</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">css =</span> <span class="st">"</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="st">    .buttonExcel{</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="st">    font-size: 12px;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="st">    color: #fff;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="st">    background-color: red;</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="st">    border-color: black;</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="st">    font-family: serif;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="st">    font-weight: bold;</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="st">    border-radius: 10px;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="st">    padding: 4px;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="st">    </span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="st">    .buttonExcel:hover,</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="st">    .buttonExcel:active,</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="st">    .buttonExcel:focus,</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="st">    .buttonExcel.active {</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="st">    background: grey;</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="st">    color: #ffffff;</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="st">    border-color: grey;</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="st">    "</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(attach_excel)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="fegrkmramc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fegrkmramc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#fegrkmramc thead, #fegrkmramc tbody, #fegrkmramc tfoot, #fegrkmramc tr, #fegrkmramc td, #fegrkmramc th {
+  border-style: none;
+}
+
+#fegrkmramc p {
+  margin: 0;
+  padding: 0;
+}
+
+#fegrkmramc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#fegrkmramc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fegrkmramc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fegrkmramc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fegrkmramc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fegrkmramc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fegrkmramc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fegrkmramc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fegrkmramc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#fegrkmramc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#fegrkmramc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fegrkmramc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fegrkmramc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fegrkmramc .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fegrkmramc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fegrkmramc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#fegrkmramc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#fegrkmramc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#fegrkmramc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fegrkmramc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#fegrkmramc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fegrkmramc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fegrkmramc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fegrkmramc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fegrkmramc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fegrkmramc .gt_left {
+  text-align: left;
+}
+
+#fegrkmramc .gt_center {
+  text-align: center;
+}
+
+#fegrkmramc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fegrkmramc .gt_font_normal {
+  font-weight: normal;
+}
+
+#fegrkmramc .gt_font_bold {
+  font-weight: bold;
+}
+
+#fegrkmramc .gt_font_italic {
+  font-style: italic;
+}
+
+#fegrkmramc .gt_super {
+  font-size: 65%;
+}
+
+#fegrkmramc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#fegrkmramc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#fegrkmramc .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#fegrkmramc .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#fegrkmramc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#fegrkmramc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#fegrkmramc .gt_indent_5 {
+  text-indent: 25px;
+}
+
+.buttonExcel {
+  font-size: 12px;
+  color: #fff;
+  background-color: red;
+  border-color: black;
+  font-family: serif;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.buttonExcel:hover,
+.buttonExcel:active,
+.buttonExcel:focus,
+.buttonExcel.active {
+  background: grey;
+  color: #ffffff;
+  border-color: grey;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mpg">mpg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="cyl">cyl</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="disp">disp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="hp">hp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="drat">drat</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="wt">wt</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="qsec">qsec</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="vs">vs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="am">am</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="gear">gear</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="carb">carb</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.620</td>
+<td headers="qsec" class="gt_row gt_right">16.46</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.875</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">22.8</td>
+<td headers="cyl" class="gt_row gt_right">4</td>
+<td headers="disp" class="gt_row gt_right">108</td>
+<td headers="hp" class="gt_row gt_right">93</td>
+<td headers="drat" class="gt_row gt_right">3.85</td>
+<td headers="wt" class="gt_row gt_right">2.320</td>
+<td headers="qsec" class="gt_row gt_right">18.61</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.4</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">258</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.08</td>
+<td headers="wt" class="gt_row gt_right">3.215</td>
+<td headers="qsec" class="gt_row gt_right">19.44</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.7</td>
+<td headers="cyl" class="gt_row gt_right">8</td>
+<td headers="disp" class="gt_row gt_right">360</td>
+<td headers="hp" class="gt_row gt_right">175</td>
+<td headers="drat" class="gt_row gt_right">3.15</td>
+<td headers="wt" class="gt_row gt_right">3.440</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.1</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">225</td>
+<td headers="hp" class="gt_row gt_right">105</td>
+<td headers="drat" class="gt_row gt_right">2.76</td>
+<td headers="wt" class="gt_row gt_right">3.460</td>
+<td headers="qsec" class="gt_row gt_right">20.22</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="11"><a onclick="fetch('data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,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').then(res => res.blob()).then(blob => {
+      const downloadURL = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.href = downloadURL;
+      a.download = 'mtcars.xlsx'; a.click();
+      window.URL.revokeObjectURL(downloadURL);
+      document.body.removeChild(a);
+    });">
+  <button class="btn btn-default buttonExcel"><i class="fa fa-save"></i> Download Excel</button>
+</a></td>
+    </tr>
+  </tfoot>
+  
+</table>
+</div>
+</div>
+</div>
+<p>Para personalizar aún más nuestro botón o en general la opción para descargar los datos, puedes explorar <a href="https://cran.r-project.org/web/packages/downloadthis/vignettes/downloadthis.html">Introduction to downloadthis</a></p>
+</section>
+<section id="agregar-gráficos" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="agregar-gráficos"><span class="header-section-number">4.4</span> Agregar gráficos</h2>
+</section>
+<section id="agregar-tooltips" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="agregar-tooltips"><span class="header-section-number">4.5</span> Agregar <em>tooltips</em></h2>
+</section>
+<section id="agregar-iconos" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="agregar-iconos"><span class="header-section-number">4.6</span> Agregar iconos</h2>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          // default icon
+          link.classList.add("external");
+      }
+    }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Funciones Referencia.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Funciones de referencia</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Referencias.html" class="pagination-link">
+        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

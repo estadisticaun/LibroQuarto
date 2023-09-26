@@ -1,0 +1,165 @@
+# Funciones de *gt* avanzadas {#sec-funavan}
+
+En este capítulo veremos algunas otras funciones "más avanzadas" de *gt*. Para utilizar dichas funciones es necesario tener algunos conocimiento de HTML, CSS, entre otros.
+
+
+## Personalización con CSS
+
+El paquete *gt* tiene la función `opt_css` que nos permite personalizar la tabla aplicando nuestro propio CSS. Para visualizar esto, vamos a crear una tabla usando la base de datos *exibble* disponible en R, modificaremos el color de fondo de la tabla (`one .gt_table {background-color:}`), el espacio de cada para fila de la gráfica (`#one .gt_row {padding:}`), haremos que los títulos de las columnas se vean centrados (`#one .gt_col_heading {text-align:}`) y también que cambie el color de fondo de una fila cuando pongamos el mouse sobre ella (`#one tr:hover {background-color:}`)
+
+``` {r}
+#| warning: false
+suppressMessages(library(gt))
+suppressMessages(library(dplyr))
+
+exibble %>%
+  dplyr::select(num, currency) %>%
+  gt(id = "one") %>% 
+  fmt_currency(
+    columns = vars(currency),
+    currency = "HKD"
+  ) %>%
+  fmt_scientific(
+    columns = vars(num)
+  ) %>%
+  opt_css(
+    css = "
+    #one .gt_table { 
+      background-color: skyblue;
+    }
+    #one .gt_row {
+      padding: 20px 30px;
+    }
+    #one tr:hover {
+    background-color: #f5f8ff;
+    }
+    #one .gt_col_heading {
+      text-align: center !important;
+    }
+    "
+  )
+```
+¡Quedó preciosa nuestra tabla! Puedes encontrar más opciones de CSS [aquí](https://www.w3schools.com/css/css_table_style.asp).
+
+## Insertar URLs
+
+Utilizando lenguaje HTML podemos agregar URLs en nuestra tabla. Para ilustrarlo, vamos a crear una una tabla con tres sitios web y sus respectivas direcciones.
+
+``` {r}
+#| warning: false
+suppressMessages(library(htmltools))
+
+# Primero creamos la base de datos con los sitios y las direcciones
+ex_sites <- data.frame(
+  Dirección = c("https://gmail.com", "https://youtube.com", "https://es.duolingo.com/"),
+  Sitio = c("Gmail", "YouTube", "Duolingo")
+)
+
+# Ahora si creamos la tabla
+gt(ex_sites) %>% 
+  text_transform(
+    locations = cells_body(columns = vars(Dirección)), # Comenzamos editando la columna con las direcciones
+    fn = function(x) {
+      # la función map de purrr aplica una operación a cada elemento de x
+    purrr::map(x,  ~htmltools::tags$a(href = .x, target = "_blank", .x))
+      }
+  ) %>% # EXPLICAR ESTO
+  text_transform(
+    locations = cells_body(columns = vars(Sitio)),
+    fn = function(x) {
+    purrr::map2(
+      .x = x, .y = ex_sites$Dirección, 
+      .f = ~glue::glue('<a href="{.y}" target="_blank">{.x}</a>'))
+      }
+  )
+```
+
+## Opción para descargar los datos {#sec-original}
+
+Podemos agregar opciones para que quien vea nuestra tabla tenga la opción de descargar los datos, esto es posible usando funciones de HTML y agregando una nota al pie de página con la función `tab_source_note()` de *gt*. Para ilustrarlo, vamos a presentar en una tabla los datos de *mtcars* dsiponibles en R; inicialmente crearemos un archivo .csv con la función `write.csv2`, luego usamos lenguaje HTML para crear un hipervínculo que descarge el archivo .csv, y finalmente agregamos dicho link como una nota al pie de página en la tabla.
+
+```{r}
+#| warning: false
+write.csv2(mtcars, "./file.csv")
+
+encoded <- readLines("./file.csv") %>% # EXPLICAR ESTO
+  paste0(collapse="\n") %>% 
+  openssl::base64_encode() -> encoded
+
+html_encode <- sprintf('data:text/csv;base64,%s', encoded)
+html_csv <- glue::glue(
+  "<a download='mtcars.csv' href='{html_encode}'>CSV Download</a>"
+  )
+
+head(mtcars) %>% 
+  gt() %>% 
+  tab_source_note(html(html_csv))
+```
+
+También existe una manera más sencilla (sin utilizar lenguaje HTML) para agregar la opción de descargar los datos, solo necesitamos la librería *"downloadthis"*, veamos cómo, haciendo uso de nuestro ejemplo con *mtcars*.
+
+```{r}
+#| warning: false
+library(downloadthis)
+
+head(mtcars) %>%
+  gt() %>%
+  tab_source_note(
+    mtcars %>%
+      download_this(
+        output_name = "mtcars", # Cómo se llamará el archivo una vez descargado 
+        output_extension = ".csv", # El archivo es . csv, también puede ser .xlsx
+        button_label = "Download csv", # Cómo se llamará el botón
+        button_type = "default", # Tipo de botón, gtambién puede ser danger, warning, etc
+      )
+  )
+```
+
+Con la función `download_this` podemos personalizar más nuestro botón utilizando lenguaje CSS. Vamos a generar un botón que descargue un archivo .xlsx, de color rojo, letra de tipo "Serif" y borde color negro.
+
+
+``` {r}
+#| warning: false
+attach_excel <- mtcars %>%
+  download_this(
+    output_name = "mtcars",
+    output_extension = ".xlsx", # Excel file type
+    button_label = "Download Excel",
+    class = "buttonExcel"
+  )
+
+head(mtcars) %>%
+  gt() %>%
+  opt_css(
+    css = "
+    .buttonExcel{
+    font-size: 12px;
+    color: #fff;
+    background-color: red;
+    border-color: black;
+    font-family: serif;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 4px;
+    }
+    
+    .buttonExcel:hover,
+    .buttonExcel:active,
+    .buttonExcel:focus,
+    .buttonExcel.active {
+    background: grey;
+    color: #ffffff;
+    border-color: grey;
+    }
+    "
+  ) %>% 
+  tab_source_note(attach_excel)
+```
+
+Para personalizar aún más nuestro botón o en general la opción para descargar los datos, puedes explorar [Introduction to downloadthis](https://cran.r-project.org/web/packages/downloadthis/vignettes/downloadthis.html)
+
+## Agregar gráficos
+
+## Agregar *tooltips*
+
+## Agregar iconos 
