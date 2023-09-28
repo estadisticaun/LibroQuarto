@@ -9,10 +9,14 @@ book:
     - index.qmd
     - "Conceptos Basicos.qmd"
     - "Agregar Partes.qmd"
-    - "Funciones Referencia.qmd"
     - "gt av.qmd"
     - Referencias.qmd
   favicon: 'Imagenes/Logos/Escudo_UNAL.png'
+  sidebar: 
+    tools: 
+      - icon: github
+        url: https://github.com/estadisticaun/LibroQuarto
+
 
 bibliography: references.bib
 

@@ -420,3 +420,35 @@ pm_data |>
   gt_img_circle(column = 'Foto', height = 100, border_weight = 1) |>
   cols_width(Foto ~ px(110)) # 110 = 100 (height) + 10 (padding around imgs)
 ```
+
+## Exportar y extraer una tabla gt
+
+Como mencionamos en el índice, las tablas que se realizan usando *gt* no son almacenadas ni guardadas, pero esto puede solucionarse usando la función `gtsave()`
+
+```{r}
+#| echo: false
+#| warning: false
+islands_tbl <- 
+  tibble(
+    name = names(islands),
+    size = islands
+  ) |>
+  arrange(desc(size)) |>
+  slice(1:10)
+
+# Cambiamos a español los nombres de las columnas
+names(islands_tbl)<-c("Nombre","Tamaño")
+
+
+```
+
+
+```{r}
+#| eval: false
+gt_tbl |> gtsave(filename = "islands.png")
+```
+
+Se puede guardar en distintos formatos como *.tex*, *.rtf*, *.docx* y *.html*.
+
+
+Existen muchísimas funciones en *gt* que te permiten personalizar aún más tu tabla. Puedes encontrar la lista completa [aquí](https://gt.rstudio.com/reference/index.html).
